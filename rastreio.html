@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rastreamento de Encomendas | StarCell</title>
+  <meta name="description" content="Acompanhe o status e a entrega do seu iPhone ou acessório na StarCell em tempo real com garantia oficial.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/starcell-logo.png?v=blue_v2" type="image/png">
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+          },
+          boxShadow: {
+            'apple': '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02)',
+            'apple-hover': '0 20px 35px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Apple White Global Styles -->
+  <link rel="stylesheet" href="/style.css?v=starcell_v3">
+
+  <style>
+    body {
+      background-color: #fbfbfd !important;
+      color: #1d1d1f !important;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .glow-orb {
+      position: absolute;
+      filter: blur(140px);
+      will-change: transform;
+      animation: floatOrb 14s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -20px) scale(1.05); }
+      100% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#0071e3] selection:text-white relative bg-[#fbfbfd]">
+
+  <!-- Ambient Subtle Apple Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="glow-orb top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[140px]"></div>
+    <div class="glow-orb bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-slate-200/50 rounded-full blur-[140px]"></div>
+  </div>
+
+  <!-- Header (Apple Frosted Glass Translúcido) -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/85 border-b border-slate-200/80 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo StarCell -->
+      <a href="/" class="flex items-center gap-2 group py-1" title="StarCell Store">
+        <img 
+          src="/assets/starcell-logo.png?v=blue_v2" 
+          alt="StarCell" 
+          class="h-11 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
+        >
+        <span class="text-[9px] sm:text-xs font-mono font-black px-1.5 sm:px-2 py-0.5 rounded-md bg-blue-50 text-[#0071e3] border border-blue-200/90 tracking-wider shadow-2xs self-center">
+          STORE
+        </span>
+      </a>
+
+      <!-- Action: Voltar para a Loja -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a 
+          href="/" 
+          class="btn-apple-primary text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#0071e3] transition flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 shadow-sm active:scale-95"
+        >
+          <i data-lucide="arrow-left" class="w-4 h-4 text-[#0071e3]"></i>
+          <span>Voltar para a Loja</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 sm:py-14 relative z-10 space-y-8">
+    
+    <!-- Title & Description -->
+    <div class="text-center space-y-2">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0071e3] text-xs font-bold uppercase mb-1 shadow-2xs">
+        <i data-lucide="truck" class="w-4 h-4 text-[#0071e3]"></i>
+        <span>Envios com Seguro Total</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black text-[#1d1d1f] tracking-tight">
+        Rastrear Minha <span class="text-[#0071e3]">Encomenda</span>
+      </h1>
+      <p class="text-slate-500 text-xs sm:text-sm max-w-lg mx-auto leading-relaxed">
+        Digite o código de rastreamento recebido no seu WhatsApp para acompanhar a entrega do seu iPhone ou acessório em tempo real.
+      </p>
+    </div>
+
+    <!-- Search Box Card (Branco Apple) -->
+    <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-apple">
+      <form id="trackingForm" onsubmit="handleTrack(event)" class="flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-grow">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+            <i data-lucide="barcode" class="w-5 h-5 text-[#0071e3]"></i>
+          </div>
+          <input 
+            type="text" 
+            id="trackingInput" 
+            placeholder="Ex: FL849204928BR" 
+            required
+            class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-12 pr-4 py-3.5 text-slate-900 font-mono text-base uppercase focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-bold tracking-wider"
+          >
+        </div>
+        <button 
+          type="submit" 
+          class="btn-apple-primary px-8 py-3.5 bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 whitespace-nowrap text-xs sm:text-sm tracking-wide"
+        >
+          <i data-lucide="search" class="w-4 h-4"></i>
+          <span>Rastrear Agora</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingBox" class="hidden py-12 text-center">
+      <div class="inline-block w-10 h-10 border-4 border-slate-200 border-t-[#0071e3] rounded-full animate-spin"></div>
+      <p class="text-xs text-slate-500 mt-3 font-medium">Buscando informações do seu envio na base oficial...</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div id="errorBox" class="hidden bg-red-50 border border-red-200 rounded-2xl p-5 text-center space-y-2 shadow-sm">
+      <div class="w-10 h-10 mx-auto rounded-full bg-red-100 text-red-600 flex items-center justify-center mb-1">
+        <i data-lucide="alert-circle" class="w-5 h-5"></i>
+      </div>
+      <h3 class="text-red-950 font-bold text-sm">Objeto não localizado</h3>
+      <p id="errorMessage" class="text-xs text-red-700 max-w-md mx-auto">
+        Verifique se digitou o código corretamente (ex: FL849204928BR). Se o pedido acabou de ser postado, pode levar alguns minutos para constar no sistema.
+      </p>
+    </div>
+
+    <!-- Tracking Result Display -->
+    <div id="resultBox" class="hidden space-y-6">
+      
+      <!-- Summary Card (Branco Apple) -->
+      <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-apple space-y-6">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Código de Rastreamento</span>
+            <div id="resCode" class="text-2xl font-black text-[#0071e3] font-mono tracking-tight mt-0.5"></div>
+          </div>
+
+          <div class="text-left sm:text-right">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Status Atual</span>
+            <div id="resStatusBadge" class="mt-0.5"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+          <div class="bg-slate-50 border border-slate-200/70 rounded-2xl p-4">
+            <span class="text-slate-500 block mb-1">Destinatário:</span>
+            <span id="resCustomer" class="font-bold text-[#1d1d1f] text-sm block"></span>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200/70 rounded-2xl p-4">
+            <span class="text-slate-500 block mb-1">Destino:</span>
+            <span id="resDestination" class="font-bold text-[#1d1d1f] text-sm block"></span>
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200/70 rounded-2xl p-4">
+            <span class="text-slate-500 block mb-1">Última Atualização:</span>
+            <span id="resUpdated" class="font-bold text-[#1d1d1f] text-sm font-mono block"></span>
+          </div>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200/70 rounded-2xl p-4 text-xs">
+          <span class="text-slate-500 block mb-1">Conteúdo Declarado:</span>
+          <span id="resItems" class="font-semibold text-slate-800"></span>
+        </div>
+
+        <!-- Stepper Progress Bar -->
+        <div class="pt-4 border-t border-slate-100">
+          <div class="flex items-center justify-between relative">
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-slate-200 w-full z-0"></div>
+            <div id="stepperLine" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-[#0071e3] z-0 transition-all duration-500 w-1/4"></div>
+
+            <!-- Step 1 -->
+            <div class="relative z-10 flex flex-col items-center">
+              <div id="stepDot1" class="w-8 h-8 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm">
+                <i data-lucide="package-check" class="w-4 h-4"></i>
+              </div>
+              <span class="text-[10px] text-slate-600 font-bold mt-1 text-center">Postado</span>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="relative z-10 flex flex-col items-center">
+              <div id="stepDot2" class="w-8 h-8 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center text-xs font-bold shadow-sm">
+                <i data-lucide="truck" class="w-4 h-4"></i>
+              </div>
+              <span class="text-[10px] text-slate-400 font-bold mt-1 text-center">Em Trânsito</span>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="relative z-10 flex flex-col items-center">
+              <div id="stepDot3" class="w-8 h-8 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center text-xs font-bold shadow-sm">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+              </div>
+              <span class="text-[10px] text-slate-400 font-bold mt-1 text-center">Saiu p/ Entrega</span>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="relative z-10 flex flex-col items-center">
+              <div id="stepDot4" class="w-8 h-8 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center text-xs font-bold shadow-sm">
+                <i data-lucide="check" class="w-4 h-4"></i>
+              </div>
+              <span class="text-[10px] text-slate-400 font-bold mt-1 text-center">Entregue</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Timeline Card (Branco Apple) -->
+      <div class="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-apple">
+        <h3 class="text-base sm:text-lg font-black text-[#1d1d1f] mb-6 flex items-center gap-2">
+          <i data-lucide="history" class="w-5 h-5 text-[#0071e3]"></i>
+          <span>Histórico de Movimentações</span>
+        </h3>
+
+        <div id="timelineContainer" class="space-y-6 relative border-l-2 border-slate-200 ml-3 pl-6">
+          <!-- Rendered via JavaScript -->
+        </div>
+      </div>
+
+      <!-- WhatsApp Support Callout -->
+      <div class="rounded-2xl bg-emerald-50/70 border border-emerald-200 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 shadow-2xs">
+            <i data-lucide="message-circle" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h4 class="font-bold text-emerald-950 text-sm">Alguma dúvida sobre a sua entrega?</h4>
+            <p class="text-xs text-emerald-800">Atendimento oficial StarCell: 55 16 99765-5257</p>
+          </div>
+        </div>
+        <a 
+          id="btnHelpWhatsApp" 
+          href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20meu%20rastreio." 
+          target="_blank" 
+          class="btn-apple-primary px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-2 whitespace-nowrap shadow-sm active:scale-95"
+        >
+          <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
+          <span>Falar com o Suporte</span>
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer (Apple Subtle) -->
+  <footer class="bg-[#f5f5f7] border-t border-slate-200 py-8 text-center text-xs text-slate-500 relative z-10">
+    <div class="max-w-6xl mx-auto px-4 space-y-1.5">
+      <p>© 2026 StarCell iPhones • CNPJ 04.014.240/0001-04 • Sistema Oficial de Logística & Rastreio</p>
+      <p class="text-[11px] text-slate-500">Loja Física: Av. Sete de Setembro, 783 - Centro, Divinópolis - MG, 35500-011 • CNPJ 04.014.240/0001-04 • 1 Ano Garantia Apple</p>
+      <div class="pt-2">
+        <a href="/admin" class="text-slate-400 hover:text-slate-600 transition inline-flex items-center gap-1 text-[10px]">
+          <i data-lucide="lock" class="w-3 h-3 text-slate-400"></i>
+          <span>Painel do Lojista</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DO RASTREIO -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+
+      // Verifica parâmetro na URL (?codigo=... ou ?code=...)
+      const urlParams = new URLSearchParams(window.location.search);
+      const codeFromUrl = urlParams.get('codigo') || urlParams.get('code');
+      if (codeFromUrl) {
+        document.getElementById('trackingInput').value = codeFromUrl.trim().toUpperCase();
+        searchTracking(codeFromUrl.trim().toUpperCase());
+      }
+    });
+
+    function handleTrack(e) {
+      e.preventDefault();
+      const code = document.getElementById('trackingInput').value.trim().toUpperCase();
+      if (code) {
+        searchTracking(code);
+      }
+    }
+
+    async function searchTracking(code) {
+      const loading = document.getElementById('loadingBox');
+      const errorBox = document.getElementById('errorBox');
+      const resultBox = document.getElementById('resultBox');
+
+      loading.classList.remove('hidden');
+      errorBox.classList.add('hidden');
+      resultBox.classList.add('hidden');
+
+      try {
+        const res = await fetch(`/api/tracking/${encodeURIComponent(code)}`);
+        const json = await res.json();
+        loading.classList.add('hidden');
+
+        if (json.success && json.data) {
+          renderResult(json.data);
+          resultBox.classList.remove('hidden');
+          // Atualiza URL sem recarregar a página
+          window.history.replaceState({}, '', `/rastreio?codigo=${encodeURIComponent(code)}`);
+        } else {
+          document.getElementById('errorMessage').innerText = json.error || 'Código de rastreamento não encontrado.';
+          errorBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        loading.classList.add('hidden');
+        document.getElementById('errorMessage').innerText = 'Erro ao consultar o servidor. Verifique sua conexão e tente novamente.';
+        errorBox.classList.remove('hidden');
+      }
+    }
+
+    function renderResult(data) {
+      document.getElementById('resCode').innerText = data.tracking_code;
+      document.getElementById('resCustomer').innerText = data.customer_name_masked || 'Cliente';
+      document.getElementById('resDestination').innerText = data.destination || 'Não informado';
+      document.getElementById('resUpdated').innerText = data.updated_at || data.created_at;
+      document.getElementById('resItems').innerText = data.items_description || 'Produto Apple Lacrado';
+
+      // Badge de status
+      const isDelivered = data.status === 'Objeto entregue';
+      const badgeEl = document.getElementById('resStatusBadge');
+      badgeEl.innerHTML = `
+        <span class="px-3 py-1 rounded-full text-xs font-bold ${isDelivered ? 'bg-emerald-100 text-emerald-700 border border-emerald-300' : 'bg-blue-100 text-[#0071e3] border border-blue-200'}">
+          ${data.status}
+        </span>
+      `;
+
+      // Atualiza botão de WhatsApp com código
+      const helpBtn = document.getElementById('btnHelpWhatsApp');
+      helpBtn.href = `https://wa.me/5516997655257?text=${encodeURIComponent('Olá, StarCell! Gostaria de consultar sobre a entrega do meu pedido com o código: ' + data.tracking_code)}`;
+
+      // Atualiza Stepper
+      updateStepper(data.status);
+
+      // Renderiza Histórico de Checkpoints
+      renderTimeline(data.checkpoints || []);
+    }
+
+    function updateStepper(status) {
+      const line = document.getElementById('stepperLine');
+      const d1 = document.getElementById('stepDot1');
+      const d2 = document.getElementById('stepDot2');
+      const d3 = document.getElementById('stepDot3');
+      const d4 = document.getElementById('stepDot4');
+
+      const s = (status || '').toLowerCase();
+
+      // Reset
+      [d2, d3, d4].forEach(d => {
+        d.className = 'w-8 h-8 rounded-full bg-slate-100 border-2 border-slate-300 text-slate-400 flex items-center justify-center text-xs font-bold shadow-sm';
+      });
+
+      if (s.includes('entregue')) {
+        line.style.width = '100%';
+        [d1, d2, d3, d4].forEach(d => {
+          d.className = 'w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm';
+        });
+      } else if (s.includes('saiu para entrega') || s.includes('rota')) {
+        line.style.width = '70%';
+        [d1, d2, d3].forEach(d => {
+          d.className = 'w-8 h-8 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm';
+        });
+      } else if (s.includes('trânsito') || s.includes('transferência')) {
+        line.style.width = '40%';
+        [d1, d2].forEach(d => {
+          d.className = 'w-8 h-8 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm';
+        });
+      } else {
+        line.style.width = '15%';
+        d1.className = 'w-8 h-8 rounded-full bg-[#0071e3] text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-sm';
+      }
+
+      lucide.createIcons();
+    }
+
+    function renderTimeline(checkpoints) {
+      const container = document.getElementById('timelineContainer');
+      if (!checkpoints.length) {
+        container.innerHTML = `<p class="text-xs text-slate-400">Nenhum evento registrado ainda.</p>`;
+        return;
+      }
+
+      // Ordena do mais recente para o mais antigo
+      const sorted = checkpoints.slice().reverse();
+
+      container.innerHTML = sorted.map((cp, idx) => {
+        const isLatest = idx === 0;
+        const dotColor = isLatest ? 'bg-[#0071e3] text-white ring-4 ring-blue-100' : 'bg-slate-200 text-slate-500';
+
+        return `
+          <div class="relative group">
+            <!-- Icon Dot on line -->
+            <div class="absolute -left-[35px] top-0 w-6 h-6 rounded-full ${dotColor} flex items-center justify-center text-[10px] font-bold">
+              <i data-lucide="${isLatest ? 'check' : 'circle'}" class="w-3 h-3"></i>
+            </div>
+
+            <!-- Content Box -->
+            <div class="bg-slate-50 border ${isLatest ? 'border-blue-200 bg-blue-50/30' : 'border-slate-200/80'} rounded-2xl p-4 space-y-1">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                <span class="font-bold text-[#1d1d1f] text-sm ${isLatest ? 'text-[#0071e3]' : ''}">
+                  ${cp.status}
+                </span>
+                <span class="font-mono text-[11px] text-slate-500">
+                  ${cp.timestamp}
+                </span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                ${cp.description}
+              </p>
+              <div class="text-[11px] text-slate-500 flex items-center gap-1 pt-1">
+                <i data-lucide="map-pin" class="w-3 h-3 text-[#0071e3]"></i>
+                <span>${cp.location}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

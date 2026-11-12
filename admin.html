@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo de Envios | StarCell</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" href="/assets/starcell-logo.png?v=blue_v2" type="image/png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#027cf0',
+              cyan: '#00d4ff',
+              hover: '#0066d6',
+              dark: '#06070a',
+              card: '#0c0f17',
+              border: '#1b2333',
+              muted: '#71717a',
+              orange: '#027cf0',
+              glow: '#00d4ff'
+            }
+          },
+          boxShadow: {
+            'neon-blue': '0 0 25px rgba(2, 124, 240, 0.45)',
+            'neon-orange': '0 0 25px rgba(2, 124, 240, 0.45)',
+            'neon-sm': '0 0 12px rgba(2, 124, 240, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+
+  <style>
+    html, body {
+      background-color: #06070a !important;
+      color: #f1f5f9 !important;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-brand-dark text-slate-100 min-h-screen flex flex-col antialiased selection:bg-brand-blue selection:text-white">
+
+  <!-- 🔒 LOGIN OVERLAY -->
+  <div id="loginScreen" class="fixed inset-0 z-50 bg-brand-dark/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-brand-card border-2 border-brand-blue/60 rounded-3xl max-w-md w-full p-8 shadow-2xl relative shadow-neon-sm">
+      
+      <div class="text-center mb-6">
+        <div class="w-24 h-16 mx-auto mb-3 rounded-2xl overflow-hidden border border-brand-blue/40 p-1.5 bg-black/70 shadow-neon-sm flex items-center justify-center">
+          <img src="/assets/starcell-logo.png?v=blue_v2" alt="StarCell" class="w-full h-full object-contain rounded-xl">
+        </div>
+        <h2 class="text-2xl font-black text-white tracking-tight">ACESSO RESTRITO</h2>
+        <p class="text-xs text-slate-400 mt-1">Gestão de Logística & Rastreio • StarCell</p>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">Senha de Acesso Admin:</label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="adminPasswordInput" 
+              placeholder="••••••••" 
+              required 
+              autofocus
+              class="w-full pl-4 pr-12 py-3 bg-black/60 border border-brand-border rounded-xl text-white text-base focus:outline-none focus:border-brand-blue tracking-widest font-mono"
+            >
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white">
+              <i id="eyeIcon" data-lucide="eye" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="loginError" class="hidden text-xs text-red-400 bg-red-950/60 border border-red-800 p-2.5 rounded-xl text-center font-medium">
+          Senha incorreta.
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-brand-blue hover:bg-brand-hover text-white font-bold rounded-xl shadow-neon-sm transition-all flex items-center justify-center gap-2 active:scale-95">
+          <i data-lucide="log-in" class="w-4 h-4"></i> Entrar no Painel
+        </button>
+
+        <div class="text-center pt-2">
+          <a href="/" class="text-xs text-slate-400 hover:text-brand-blue transition flex items-center justify-center gap-1.5">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Voltar para a Loja Virtual
+          </a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- 📊 PAINEL ADMINISTRATIVO AUTENTICADO -->
+  <div id="adminLayout" class="hidden flex-col min-h-screen">
+    
+    <!-- Top Navigation -->
+    <header class="bg-brand-dark/95 backdrop-blur-md border-b border-brand-border sticky top-0 z-40">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+        
+        <div class="flex items-center gap-3">
+          <div class="w-14 h-10 rounded-xl overflow-hidden border border-brand-blue/50 p-0.5 bg-black/70 shadow-neon-sm flex items-center justify-center">
+            <img src="/assets/starcell-logo.png?v=blue_v2" alt="StarCell" class="w-full h-full object-contain rounded-lg">
+          </div>
+          <div>
+            <span class="text-lg font-black text-white">STAR<span class="text-brand-blue">CELL</span> LOGÍSTICA</span>
+            <span class="block text-[10px] text-emerald-400 font-bold uppercase flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Admin Conectado
+            </span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="/rastreio" target="_blank" class="px-3.5 py-2 bg-brand-card hover:bg-brand-border border border-brand-border rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition flex items-center gap-1.5">
+            <i data-lucide="external-link" class="w-4 h-4 text-brand-blue"></i>
+            <span class="hidden sm:inline">Ver Tela do Cliente</span>
+          </a>
+
+          <button onclick="handleLogout()" class="px-3.5 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>Sair</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+      
+      <!-- Metrics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Total de Envios</span>
+            <div id="statTotal" class="text-3xl font-black text-white font-mono mt-1">0</div>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center">
+            <i data-lucide="package" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Em Trânsito</span>
+            <div id="statTransit" class="text-3xl font-black text-amber-400 font-mono mt-1">0</div>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+            <i data-lucide="truck" class="w-6 h-6"></i>
+          </div>
+        </div>
+
+        <div class="bg-brand-card border border-brand-border rounded-2xl p-5 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-slate-400 uppercase font-bold tracking-wider">Entregues</span>
+            <div id="statDelivered" class="text-3xl font-black text-emerald-400 font-mono mt-1">0</div>
+          </div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="check-circle" class="w-6 h-6"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULÁRIO DE EMISSÃO DE CÓDIGO DE RASTREIO -->
+      <div class="bg-brand-card border border-brand-border rounded-3xl p-6 sm:p-8 shadow-xl">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-brand-border pb-5 mb-6">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/15 border border-brand-blue/30 text-brand-blue text-xs font-bold uppercase mb-2">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+              <span>Novo Envio</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-black text-white">Emitir Novo Código de Rastreamento</h2>
+            <p class="text-xs text-slate-400 mt-1">Preencha os dados do comprador para gerar o código e o link para enviar no WhatsApp.</p>
+          </div>
+
+          <button type="button" onclick="generateNewCode()" class="px-4 py-2.5 bg-black/60 hover:bg-black/90 border border-brand-border hover:border-brand-blue text-slate-200 rounded-xl text-xs font-bold transition flex items-center gap-2">
+            <i data-lucide="refresh-cw" class="w-4 h-4 text-brand-blue"></i>
+            <span>Gerar Código Aleatório</span>
+          </button>
+        </div>
+
+        <form id="orderForm" onsubmit="handleCreateOrder(event)" class="space-y-6">
+          
+          <!-- Linha 1: Código de Rastreio & Destinatário -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Código de Rastreamento:</label>
+              <input 
+                type="text" 
+                id="f_tracking_code" 
+                placeholder="Ex: BS849204928BR" 
+                required 
+                class="w-full bg-black/60 border border-brand-blue/60 rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none focus:border-brand-blue uppercase font-bold"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Nome do Cliente:</label>
+              <input 
+                type="text" 
+                id="f_customer_name" 
+                placeholder="Ex: Lucas Henrique Oliveira" 
+                required 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">WhatsApp do Cliente:</label>
+              <input 
+                type="text" 
+                id="f_customer_phone" 
+                placeholder="Ex: 55 16 99999-9999" 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+          </div>
+
+          <!-- Linha 2: CEP com busca automática e Endereço -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">CEP:</label>
+              <div class="relative">
+                <input 
+                  type="text" 
+                  id="f_cep" 
+                  placeholder="00000-000" 
+                  required 
+                  onblur="consultarCep(this.value)"
+                  class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue font-mono"
+                >
+                <button type="button" onclick="consultarCep(document.getElementById('f_cep').value)" class="absolute right-2 top-2.5 text-xs text-brand-blue font-bold hover:underline">
+                  Buscar
+                </button>
+              </div>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Endereço (Rua/Avenida):</label>
+              <input 
+                type="text" 
+                id="f_address" 
+                placeholder="Ex: Av. Brasil" 
+                required 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Número:</label>
+              <input 
+                type="text" 
+                id="f_number" 
+                placeholder="Ex: 1250" 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+          </div>
+
+          <!-- Linha 3: Bairro, Cidade, Estado, Complemento -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Bairro:</label>
+              <input 
+                type="text" 
+                id="f_neighborhood" 
+                placeholder="Ex: Centro" 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Cidade:</label>
+              <input 
+                type="text" 
+                id="f_city" 
+                placeholder="Ex: Ribeirão Preto" 
+                required 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">UF (Estado):</label>
+              <input 
+                type="text" 
+                id="f_state" 
+                placeholder="SP" 
+                maxlength="2" 
+                required 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue uppercase font-mono"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Complemento (opcional):</label>
+              <input 
+                type="text" 
+                id="f_complement" 
+                placeholder="Apto 42 / Bloco B" 
+                class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+              >
+            </div>
+
+          </div>
+
+          <!-- Linha 4: Descrição do Aparelho / Pedido -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-1.5">Descrição do(s) Aparelho(s) Enviado(s):</label>
+            <input 
+              type="text" 
+              id="f_items_description" 
+              placeholder="Ex: 1x iPhone 18 Pro Max 256GB Titânio Bordô - Novo, Lacrado com 1 Ano de Garantia Apple" 
+              required 
+              class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue"
+            >
+          </div>
+
+          <!-- Botão de Envio -->
+          <div class="pt-2 flex justify-end">
+            <button type="submit" class="px-8 py-3.5 bg-gradient-to-r from-blue-600 via-brand-blue to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-bold rounded-xl shadow-neon-sm hover:shadow-neon-blue transition-all flex items-center gap-2 active:scale-95">
+              <i data-lucide="check-circle" class="w-4 h-4"></i>
+              <span>Cadastrar Envio & Emitir Rastreio</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- TABELA DE ENVIOS CADASTRADOS -->
+      <div class="bg-brand-card border border-brand-border rounded-3xl p-6 sm:p-8 shadow-xl">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 class="text-xl font-black text-white">Envios Cadastrados</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Gerencie os checkpoints, atualize o status e envie o link para o cliente no WhatsApp.</p>
+          </div>
+
+          <div class="w-full sm:w-72 relative">
+            <input 
+              type="text" 
+              id="searchOrdersInput" 
+              oninput="filterOrdersTable()" 
+              placeholder="Buscar por código ou cliente..." 
+              class="w-full bg-black/60 border border-brand-border rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-brand-blue"
+            >
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          </div>
+        </div>
+
+        <!-- Mobile Cards View (Perfeito em celulares) -->
+        <div id="ordersMobileCards" class="block md:hidden space-y-3">
+          <div class="py-8 text-center text-slate-400">Carregando envios...</div>
+        </div>
+
+        <!-- Desktop Table View -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-brand-border text-slate-400 uppercase tracking-wider font-bold">
+                <th class="py-3 px-4">Código</th>
+                <th class="py-3 px-4">Cliente / Destino</th>
+                <th class="py-3 px-4">Produto</th>
+                <th class="py-3 px-4">Status Atual</th>
+                <th class="py-3 px-4">Data/Hora</th>
+                <th class="py-3 px-4 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody" class="divide-y divide-brand-border/60">
+              <tr>
+                <td colspan="6" class="py-8 text-center text-slate-400">Carregando envios...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MODAL PARA ADICIONAR ATUALIZAÇÃO / CHECKPOINT -->
+  <div id="checkpointModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-brand-card border border-brand-blue/60 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+      
+      <div class="flex items-center justify-between border-b border-brand-border pb-4 mb-5">
+        <div>
+          <h3 class="font-black text-lg text-white">Atualizar Rastreamento</h3>
+          <p id="modalTrackingCode" class="text-xs text-brand-blue font-mono font-bold mt-0.5"></p>
+        </div>
+        <button onclick="closeCheckpointModal()" class="text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Presets Rápidos -->
+      <div class="mb-5">
+        <span class="text-[11px] font-bold text-slate-400 uppercase block mb-2">Opções Rápidas:</span>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button type="button" onclick="setPreset('Em trânsito', 'Objeto em trânsito para a unidade de tratamento.', 'Centro de Distribuição')" class="p-2 bg-black/60 hover:bg-black/90 border border-brand-border hover:border-brand-blue rounded-xl text-left text-slate-200 transition">
+            🚚 Em Trânsito (CD)
+          </button>
+          <button type="button" onclick="setPreset('Em transferência', 'Objeto transferido para a agência da cidade de destino.', 'Agência de Distribuição Local')" class="p-2 bg-black/60 hover:bg-black/90 border border-brand-border hover:border-brand-blue rounded-xl text-left text-slate-200 transition">
+            🏢 Agência Local
+          </button>
+          <button type="button" onclick="setPreset('Saiu para entrega', 'Objeto saiu para entrega ao destinatário.', 'Em rota com entregador')" class="p-2 bg-black/60 hover:bg-black/90 border border-brand-border hover:border-brand-blue rounded-xl text-left text-slate-200 transition">
+            🛵 Saiu para Entrega
+          </button>
+          <button type="button" onclick="setPreset('Objeto entregue', 'Objeto entregue ao destinatário com sucesso.', 'Endereço de Entrega')" class="p-2 bg-black/60 hover:bg-black/90 border border-brand-border hover:border-emerald-500 rounded-xl text-left text-emerald-400 transition">
+            ✅ Objeto Entregue
+          </button>
+        </div>
+      </div>
+
+      <form id="checkpointForm" onsubmit="handleSaveCheckpoint(event)" class="space-y-4">
+        <input type="hidden" id="modalOrderId">
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Status:</label>
+          <select id="modalStatus" class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue">
+            <option value="Objeto postado">Objeto postado</option>
+            <option value="Em trânsito">Em trânsito</option>
+            <option value="Em transferência">Em transferência</option>
+            <option value="Saiu para entrega">Saiu para entrega</option>
+            <option value="Objeto entregue">Objeto entregue</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Descrição do Evento:</label>
+          <textarea id="modalDescription" rows="2" required placeholder="Ex: Objeto encaminhado para a unidade de distribuição." class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-brand-blue"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Localização:</label>
+          <input type="text" id="modalLocation" required placeholder="Ex: Divinópolis / MG ou Belo Horizonte / MG" class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue">
+        </div>
+
+        <div class="pt-3 flex justify-end gap-3">
+          <button type="button" onclick="closeCheckpointModal()" class="px-4 py-2.5 rounded-xl border border-brand-border hover:bg-brand-border text-slate-300 text-xs font-bold transition">
+            Cancelar
+          </button>
+          <button type="submit" class="px-6 py-2.5 bg-brand-blue hover:bg-brand-hover text-white rounded-xl text-xs font-bold shadow-neon-sm transition">
+            Salvar Movimentação
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- SCRIPT DO PAINEL ADMIN -->
+  <script>
+    let adminToken = sessionStorage.getItem('bs_admin_token') || '';
+    let ordersList = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      if (adminToken) {
+        showAdminLayout();
+      } else {
+        document.getElementById('loginScreen').classList.remove('hidden');
+      }
+    });
+
+    function togglePasswordVisibility() {
+      const pwd = document.getElementById('adminPasswordInput');
+      const icon = document.getElementById('eyeIcon');
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        pwd.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('adminPasswordInput').value.trim();
+      const errBox = document.getElementById('loginError');
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: pwd })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          adminToken = data.token;
+          sessionStorage.setItem('bs_admin_token', adminToken);
+          showAdminLayout();
+        } else {
+          errBox.classList.remove('hidden');
+          errBox.innerText = data.error || 'Senha incorreta.';
+        }
+      } catch (err) {
+        errBox.classList.remove('hidden');
+        errBox.innerText = 'Erro ao conectar ao servidor.';
+      }
+    }
+
+    function showAdminLayout() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('adminLayout').classList.remove('hidden');
+      document.getElementById('adminLayout').classList.add('flex');
+      generateNewCode();
+      loadOrders();
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('bs_admin_token');
+      adminToken = '';
+      location.reload();
+    }
+
+    async function generateNewCode() {
+      try {
+        const res = await fetch('/api/admin/generate-code', {
+          headers: { 'x-admin-password': adminToken }
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('f_tracking_code').value = data.code;
+        }
+      } catch (e) {
+        const num = Math.floor(100000000 + Math.random() * 900000000);
+        document.getElementById('f_tracking_code').value = `FL${num}BR`;
+      }
+    }
+
+    async function consultarCep(cep) {
+      const cleanCep = (cep || '').replace(/\D/g, '');
+      if (cleanCep.length !== 8) return;
+
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+        const data = await res.json();
+        if (!data.erro) {
+          document.getElementById('f_address').value = data.logradouro || '';
+          document.getElementById('f_neighborhood').value = data.bairro || '';
+          document.getElementById('f_city').value = data.localidade || '';
+          document.getElementById('f_state').value = data.uf || '';
+        }
+      } catch (e) {}
+    }
+
+    async function handleCreateOrder(e) {
+      e.preventDefault();
+      
+      const payload = {
+        tracking_code: document.getElementById('f_tracking_code').value.trim().toUpperCase(),
+        customer_name: document.getElementById('f_customer_name').value.trim(),
+        customer_phone: document.getElementById('f_customer_phone').value.trim(),
+        cep: document.getElementById('f_cep').value.trim(),
+        address: document.getElementById('f_address').value.trim(),
+        number: document.getElementById('f_number').value.trim(),
+        neighborhood: document.getElementById('f_neighborhood').value.trim(),
+        city: document.getElementById('f_city').value.trim(),
+        state: document.getElementById('f_state').value.trim().toUpperCase(),
+        complement: document.getElementById('f_complement').value.trim(),
+        items_description: document.getElementById('f_items_description').value.trim()
+      };
+
+      try {
+        const res = await fetch('/api/admin/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-password': adminToken
+          },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          alert(`✅ Envio cadastrado com sucesso!\nCódigo: ${payload.tracking_code}`);
+          document.getElementById('orderForm').reset();
+          generateNewCode();
+          loadOrders();
+        } else {
+          alert('Erro: ' + (data.error || 'Não foi possível cadastrar.'));
+        }
+      } catch (err) {
+        alert('Erro ao enviar dados para o servidor.');
+      }
+    }
+
+    async function loadOrders() {
+      try {
+        const res = await fetch('/api/admin/orders', {
+          headers: { 'x-admin-password': adminToken }
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          ordersList = data.orders || [];
+          updateMetrics();
+          renderOrdersTable(ordersList);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function updateMetrics() {
+      document.getElementById('statTotal').innerText = ordersList.length;
+      document.getElementById('statTransit').innerText = ordersList.filter(o => o.status !== 'Objeto entregue').length;
+      document.getElementById('statDelivered').innerText = ordersList.filter(o => o.status === 'Objeto entregue').length;
+    }
+
+    function renderOrdersTable(list) {
+      const tbody = document.getElementById('ordersTableBody');
+      const mobileCards = document.getElementById('ordersMobileCards');
+
+      if (!list.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-500">Nenhum envio cadastrado ainda.</td></tr>`;
+        if (mobileCards) mobileCards.innerHTML = `<div class="p-6 text-center text-slate-500 bg-black/40 rounded-2xl border border-brand-border">Nenhum envio cadastrado ainda.</div>`;
+        return;
+      }
+
+      // Render Desktop Table Rows
+      tbody.innerHTML = list.map(order => {
+        const isDelivered = order.status === 'Objeto entregue';
+        const badgeColor = isDelivered 
+          ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' 
+          : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30';
+
+        const origin = window.location.origin;
+        const trackingLink = `${origin}/rastreio?codigo=${order.tracking_code}`;
+        const waMsg = encodeURIComponent(`Olá, ${order.customer_name}! Seu pedido da StarCell já foi despachado! 📦\n\nCódigo de Rastreamento: ${order.tracking_code}\n\nAcompanhe a entrega em tempo real pelo link:\n${trackingLink}`);
+
+        return `
+          <tr class="hover:bg-white/[0.02] transition-colors">
+            <td class="py-3 px-4 font-mono font-bold text-brand-blue">
+              <div class="flex items-center gap-1.5">
+                <span>${order.tracking_code}</span>
+                <button onclick="copyToClipboard('${order.tracking_code}')" title="Copiar código" class="text-slate-400 hover:text-white">
+                  <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-bold text-white">${order.customer_name}</div>
+              <div class="text-[11px] text-slate-400">${order.city} / ${order.state} ${order.customer_phone ? '• ' + order.customer_phone : ''}</div>
+            </td>
+            <td class="py-3 px-4 text-slate-300 max-w-xs truncate" title="${order.items_description}">
+              ${order.items_description || 'Produto Apple'}
+            </td>
+            <td class="py-3 px-4">
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-bold ${badgeColor}">
+                ${order.status}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-slate-400 font-mono text-[11px]">
+              ${order.updated_at || order.created_at}
+            </td>
+            <td class="py-3 px-4 text-right">
+              <div class="flex items-center justify-end gap-1.5">
+                
+                <button onclick="openCheckpointModal(${order.id}, '${order.tracking_code}')" title="Adicionar movimentação" class="p-2 rounded-lg bg-black/60 border border-brand-border hover:border-brand-blue text-brand-blue transition">
+                  <i data-lucide="map-pin" class="w-4 h-4"></i>
+                </button>
+
+                <a href="https://wa.me/${(order.customer_phone || '').replace(/\D/g, '')}?text=${waMsg}" target="_blank" title="Enviar no WhatsApp do cliente" class="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 hover:bg-emerald-500/20 text-emerald-400 transition">
+                  <i data-lucide="message-circle" class="w-4 h-4"></i>
+                </a>
+
+                <button onclick="deleteOrder(${order.id})" title="Excluir envio" class="p-2 rounded-lg bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 transition">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Render Mobile Touch Cards
+      if (mobileCards) {
+        mobileCards.innerHTML = list.map(order => {
+          const isDelivered = order.status === 'Objeto entregue';
+          const badgeColor = isDelivered 
+            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' 
+            : 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30';
+          const origin = window.location.origin;
+          const trackingLink = `${origin}/rastreio?codigo=${order.tracking_code}`;
+          const waMsg = encodeURIComponent(`Olá, ${order.customer_name}! Seu pedido da StarCell já foi despachado! 📦\n\nCódigo de Rastreamento: ${order.tracking_code}\n\nAcompanhe a entrega em tempo real pelo link:\n${trackingLink}`);
+
+          return `
+            <div class="bg-black/50 border border-brand-border rounded-2xl p-4 space-y-3">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-1.5 font-mono font-bold text-brand-blue text-sm">
+                  <span>${order.tracking_code}</span>
+                  <button onclick="copyToClipboard('${order.tracking_code}')" class="text-slate-400 hover:text-white p-1">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold ${badgeColor}">
+                  ${order.status}
+                </span>
+              </div>
+
+              <div>
+                <div class="font-bold text-white text-sm">${order.customer_name}</div>
+                <div class="text-xs text-slate-400">${order.city} / ${order.state} ${order.customer_phone ? '• ' + order.customer_phone : ''}</div>
+                <div class="text-xs text-slate-300 mt-1 italic">${order.items_description || 'Produto Apple'}</div>
+              </div>
+
+              <div class="pt-2 border-t border-brand-border/60 flex items-center justify-between gap-2">
+                <button onclick="openCheckpointModal(${order.id}, '${order.tracking_code}')" class="flex-1 py-2 px-3 rounded-xl bg-black/80 border border-brand-border hover:border-brand-blue text-brand-blue text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                  <span>Atualizar</span>
+                </button>
+
+                <a href="https://wa.me/${(order.customer_phone || '').replace(/\D/g, '')}?text=${waMsg}" target="_blank" class="py-2 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center justify-center gap-1.5 transition">
+                  <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                  <span>WhatsApp</span>
+                </a>
+
+                <button onclick="deleteOrder(${order.id})" class="p-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold flex items-center justify-center transition">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      lucide.createIcons();
+    }
+
+    function filterOrdersTable() {
+      const q = document.getElementById('searchOrdersInput').value.toLowerCase().trim();
+      const filtered = ordersList.filter(o => 
+        (o.tracking_code || '').toLowerCase().includes(q) ||
+        (o.customer_name || '').toLowerCase().includes(q) ||
+        (o.city || '').toLowerCase().includes(q)
+      );
+      renderOrdersTable(filtered);
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert('Código copiado para a área de transferência: ' + text);
+    }
+
+    function openCheckpointModal(orderId, trackingCode) {
+      document.getElementById('modalOrderId').value = orderId;
+      document.getElementById('modalTrackingCode').innerText = `Código: ${trackingCode}`;
+      document.getElementById('modalLocation').value = 'Divinópolis / MG';
+      document.getElementById('modalDescription').value = '';
+      document.getElementById('checkpointModal').classList.remove('hidden');
+      document.getElementById('checkpointModal').classList.add('flex');
+    }
+
+    function closeCheckpointModal() {
+      document.getElementById('checkpointModal').classList.add('hidden');
+      document.getElementById('checkpointModal').classList.remove('flex');
+    }
+
+    function setPreset(status, description, location) {
+      document.getElementById('modalStatus').value = status;
+      document.getElementById('modalDescription').value = description;
+      document.getElementById('modalLocation').value = location;
+    }
+
+    async function handleSaveCheckpoint(e) {
+      e.preventDefault();
+      const orderId = document.getElementById('modalOrderId').value;
+      const status = document.getElementById('modalStatus').value;
+      const description = document.getElementById('modalDescription').value.trim();
+      const location = document.getElementById('modalLocation').value.trim();
+
+      try {
+        const res = await fetch(`/api/admin/orders/${orderId}/checkpoints`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-password': adminToken
+          },
+          body: JSON.stringify({ status, description, location })
+        });
+        const data = await res.json();
+        if (data.success) {
+          closeCheckpointModal();
+          loadOrders();
+        } else {
+          alert('Erro: ' + data.error);
+        }
+      } catch (err) {
+        alert('Erro ao atualizar rastreamento.');
+      }
+    }
+
+    async function deleteOrder(id) {
+      if (!confirm('Tem certeza que deseja excluir este envio?')) return;
+
+      try {
+        const res = await fetch(`/api/admin/orders/${id}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-password': adminToken }
+        });
+        const data = await res.json();
+        if (data.success) {
+          loadOrders();
+        }
+      } catch (err) {
+        alert('Erro ao excluir envio.');
+      }
+    }
+  </script>
+</body>
+</html>

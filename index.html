@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StarCell | iPhones Novos, Lacrados & 1 Ano de Garantia Apple</title>
+  <meta name="description" content="StarCell - Loja física em Divinópolis - MG (Av. Sete de Setembro, 783 - Centro). CNPJ 04.014.240/0001-04. Catálogo exclusivo de iPhones novos e lacrados. Parcelamento em até 12x sem juros, 5% OFF no PIX, 1 ano de garantia Apple e envios para todo o Brasil.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/starcell-logo.png?v=blue_v2">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              blue: '#0071e3', // Apple Blue Oficial
+              cyan: '#2997ff',
+              hover: '#0077ed',
+              dark: '#fbfbfd',
+              card: '#ffffff',
+              border: '#e5e5ea',
+              muted: '#86868b',
+              text: '#1d1d1f',
+              subtle: '#f5f5f7'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace']
+          },
+          boxShadow: {
+            'apple': '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02)',
+            'apple-hover': '0 20px 35px -10px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
+            'apple-modal': '0 25px 50px -12px rgba(0, 0, 0, 0.18)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Apple Stylesheet -->
+  <link rel="stylesheet" href="/style.css?v=starcell_v3">
+
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1018109210637052');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1018109210637052&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+</head>
+<body class="bg-[#fbfbfd] text-[#1d1d1f] font-sans selection:bg-[#0071e3] selection:text-white antialiased overflow-x-hidden min-h-screen">
+
+  <!-- Ambient Subtle Apple Light Orbs -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="glow-orb top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[140px]"></div>
+    <div class="glow-orb top-[40%] right-[-10%] w-[450px] h-[450px] bg-slate-200/50 rounded-full blur-[130px]"></div>
+    <div class="glow-orb bottom-[-10%] left-[20%] w-[500px] h-[500px] bg-blue-50/70 rounded-full blur-[150px]"></div>
+  </div>
+
+  <!-- Navigation Bar (APPLE FROSTED GLASS TRANSLÚCIDO) -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/85 border-b border-slate-200/70 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-16 sm:h-22 flex items-center justify-between gap-1.5 sm:gap-3">
+      
+      <!-- Brand Logo StarCell (Aumentado, Fundo Transparente Integrado + STORE) -->
+      <a href="/" class="flex items-center gap-2 group shrink-0 py-1" title="StarCell Store">
+        <img 
+          src="/assets/starcell-logo.png?v=blue_v2" 
+          alt="StarCell" 
+          class="h-9 sm:h-16 w-auto max-w-[110px] sm:max-w-none object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-sm"
+        >
+        <span class="hidden min-[380px]:inline-block text-[8px] sm:text-xs font-mono font-black px-1 sm:px-2 py-0.5 rounded-md bg-blue-50 text-[#0071e3] border border-blue-200/90 tracking-wider shadow-2xs self-center">
+          STORE
+        </span>
+      </a>
+
+      <!-- Action Buttons (Somente Admin, Insta, Balão de Mensagem e os 3 Tracinhos) -->
+      <div class="flex items-center gap-1 sm:gap-2.5 shrink-0">
+        
+        <!-- 1) 📦 RASTREIO (No lugar do Admin para facilidade do cliente) -->
+        <a 
+          href="/rastreio" 
+          title="Rastrear Minha Encomenda"
+          class="flex items-center gap-1 sm:gap-1.5 px-2 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-[#0071e3] transition-all shadow-sm active:scale-95 shrink-0"
+          aria-label="Rastrear Encomenda"
+        >
+          <i data-lucide="truck" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0071e3] shrink-0"></i>
+          <span class="font-mono font-black text-[10px] sm:text-xs tracking-wider">RASTREIO</span>
+        </a>
+
+        <!-- 2) 🔗 INSTA -->
+        <a 
+          id="instagram-link" 
+          href="https://www.instagram.com/starcell.oficial/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          title="Instagram Oficial"
+          class="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-pink-600 transition-all text-xs font-semibold shadow-sm active:scale-95 shrink-0"
+          aria-label="Instagram Oficial"
+        >
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
+            <defs>
+              <linearGradient id="ig-grad-header" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#f09433"/>
+                <stop offset="25%" stop-color="#e6683c"/>
+                <stop offset="50%" stop-color="#dc2743"/>
+                <stop offset="75%" stop-color="#cc2366"/>
+                <stop offset="100%" stop-color="#bc1888"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="url(#ig-grad-header)"/>
+          </svg>
+          <span class="hidden sm:inline font-bold">Insta</span>
+        </a>
+
+        <!-- 3) 💬 BALÃO DE MENSAGEM (WhatsApp) -->
+        <a 
+          href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Gostaria%20de%20consultar%20os%20modelos%20de%20iPhone%20e%20valores%20dispon%C3%ADveis." 
+          target="_blank" 
+          rel="noopener noreferrer"
+          title="Atendimento no WhatsApp"
+          class="btn-apple-primary p-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-wide shadow-sm transition flex items-center justify-center gap-1.5 active:scale-95 shrink-0"
+          aria-label="Atendimento no WhatsApp"
+        >
+          <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
+          <span class="hidden sm:inline">WhatsApp</span>
+        </a>
+
+        <!-- 4) ☰ OS 3 TRACINHOS QUE SÃO AS OPÇÕES (Menu de Opções) -->
+        <button 
+          id="mobile-menu-btn" 
+          class="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-slate-800 hover:text-[#0071e3] rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 shrink-0 focus:outline-none transition active:scale-95 cursor-pointer" 
+          aria-label="Opções e Navegação"
+          title="Menu de Opções"
+        >
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Dropdown Menu de Opções (Acionado pelos 3 tracinhos) -->
+    <div id="mobile-menu" class="hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-2xl px-4 py-4 space-y-3 shadow-xl max-w-7xl mx-auto">
+      
+      <!-- Lista de Opções e Categorias Principais -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        <a href="#catalogo" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <span class="text-base">📱</span>
+          <span>Catálogo Completo</span>
+        </a>
+        <a href="#destaques" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <span class="text-base">⌚</span>
+          <span>Apple Watch Ultra 3 & Som</span>
+        </a>
+        <a href="#simulador" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <span class="text-base">💳</span>
+          <span>Consulta CPF / Boleto</span>
+        </a>
+        <a href="#lancamento-18" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <span class="text-base">⚡</span>
+          <span>Lançamento iPhone 18 Series</span>
+        </a>
+        <a href="#avaliacoes" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <span class="text-base">⭐</span>
+          <span>Clientes Satisfeitos (4.7+)</span>
+        </a>
+        <a href="/rastreio" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <i data-lucide="truck" class="w-4 h-4 text-[#0071e3]"></i>
+          <span>Rastrear Minha Encomenda</span>
+        </a>
+      </div>
+
+      <!-- Acesso Restrito ao Lojista (Escondido na base do menu) -->
+      <div class="pt-2 border-t border-slate-100 flex justify-end">
+        <a href="/admin" class="text-slate-400 hover:text-slate-600 text-[11px] font-medium flex items-center gap-1.5 py-1 px-2 rounded-lg transition">
+          <i data-lucide="lock" class="w-3 h-3"></i>
+          <span>Acesso Lojista (Admin)</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION: APPLE FLAGSHIP WHITE LAUNCH -->
+  <section class="relative pt-8 pb-12 sm:pt-16 sm:pb-24 overflow-hidden z-10 border-b border-slate-200/80 bg-gradient-to-b from-white via-[#fbfbfd] to-[#f5f5f7]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center motion-reveal">
+      
+      <!-- Launch Pill -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase tracking-wider mb-4 shadow-sm shimmer-apple">
+        <span class="w-2 h-2 rounded-full bg-[#0071e3] animate-ping"></span>
+        <span>Lançamento Oficial Apple</span>
+      </div>
+
+      <!-- Main Headline: Apple Bold Pure -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-[#1d1d1f] tracking-tight leading-[1.08] mb-3">
+        iPhone 18 Pro Max
+      </h1>
+
+      <p class="text-base sm:text-2xl text-[#86868b] font-medium max-w-2xl mx-auto mb-4">
+        Titânio aeroespacial. Módulo visor de 48MP. Desempenho sem limites.
+      </p>
+
+      <!-- Pricing Callout: Apple Clean Light Box -->
+      <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4 px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl bg-white border border-slate-200/90 shadow-apple mb-6 w-full max-w-sm sm:w-auto">
+        <div class="text-xs sm:text-sm text-slate-600">
+          A partir de <strong class="text-[#1d1d1f] text-base sm:text-2xl font-mono ml-1 font-black">R$ 8.549,05</strong> à vista no PIX
+        </div>
+        <div class="hidden sm:block text-slate-300">|</div>
+        <div class="text-xs sm:text-sm text-[#0071e3] font-bold">
+          ou em até <strong class="font-mono text-sm sm:text-xl">12x de R$ 749,92</strong> <span class="text-emerald-600 font-semibold">sem juros</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto mb-10 sm:mb-14">
+        <button 
+          onclick="openPixCheckout('ip-18-promax')"
+          class="btn-apple-primary w-full sm:w-auto px-8 py-3.5 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 active:scale-95 transition-all"
+        >
+          <i data-lucide="zap" class="w-4 h-4 fill-white"></i>
+          <span>Comprar no PIX (5% OFF)</span>
+        </button>
+
+        <a 
+          href="#catalogo" 
+          class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-semibold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm"
+        >
+          <span>Ver Catálogo Completo</span>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-[#0071e3]"></i>
+        </a>
+      </div>
+
+      <!-- Hero Visual: As 3 Cores do iPhone 18 Pro Flutuando em Pedestal de Vidro -->
+      <div class="relative max-w-3xl mx-auto">
+        <div class="relative flex items-center justify-center gap-1 sm:gap-6 py-2 max-w-sm sm:max-w-3xl mx-auto">
+          <!-- Bordô Metálico -->
+          <div class="w-1/3 max-w-[110px] sm:max-w-[190px] transform -rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-500 cursor-pointer text-center" onclick="openLightbox('/assets/ip18_burgundy.png', 'iPhone 18 Pro Max - Bordô Metálico')">
+            <img src="/assets/ip18_burgundy.png" alt="iPhone 18 Bordô" class="w-full h-auto drop-shadow-[0_16px_24px_rgba(0,0,0,0.15)] mx-auto">
+            <span class="block text-[9px] sm:text-xs text-slate-600 font-semibold mt-2 truncate">Bordô Metálico</span>
+          </div>
+
+          <!-- Azul Glacial -->
+          <div class="w-1/3 max-w-[130px] sm:max-w-[220px] z-10 transform scale-105 sm:scale-110 hover:scale-115 transition-all duration-500 cursor-pointer text-center" onclick="openLightbox('/assets/ip18_glacier.png', 'iPhone 18 Pro Max - Azul Glacial')">
+            <img src="/assets/ip18_glacier.png" alt="iPhone 18 Copper" class="w-full h-auto drop-shadow-[0_22px_32px_rgba(0,113,227,0.22)] mx-auto">
+            <span class="inline-block text-[9px] sm:text-xs text-white font-bold bg-[#0071e3] px-2.5 py-0.5 rounded-full mt-2 truncate shadow-sm">Azul Glacial</span>
+          </div>
+
+          <!-- Prata Titânio -->
+          <div class="w-1/3 max-w-[110px] sm:max-w-[190px] transform rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-500 cursor-pointer text-center" onclick="openLightbox('/assets/ip18_silver.png', 'iPhone 18 Pro Max - Prata Titânio')">
+            <img src="/assets/ip18_silver.png" alt="iPhone 18 Prata Titânio" class="w-full h-auto drop-shadow-[0_16px_24px_rgba(0,0,0,0.15)] mx-auto">
+            <span class="block text-[9px] sm:text-xs text-slate-600 font-semibold mt-2 truncate">Prata Titânio</span>
+          </div>
+        </div>
+
+        <!-- 3 Badges de Confiança -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-8 mt-6 sm:mt-8 text-xs text-slate-600 border-t border-slate-200/80 pt-5 sm:pt-6">
+          <div class="flex items-center gap-1.5 text-[11px] sm:text-xs">
+            <i data-lucide="shield-check" class="w-4 h-4 text-[#0071e3] shrink-0"></i>
+            <span class="text-slate-800 font-medium">100% Lacrado & 1 Ano Garantia Apple</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-[11px] sm:text-xs">
+            <i data-lucide="credit-card" class="w-4 h-4 text-[#0071e3] shrink-0"></i>
+            <span class="text-slate-800 font-medium">Em até 12x Sem Juros ou 5% OFF PIX</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-[11px] sm:text-xs">
+            <i data-lucide="map-pin" class="w-4 h-4 text-[#0071e3] shrink-0"></i>
+            <span class="text-slate-800 font-medium">Divinópolis - MG ou Envio com Seguro</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Product Catalog Section -->
+  <section id="catalogo" class="py-12 sm:py-16 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header & Filters -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-5 motion-reveal">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase mb-2">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+            <span>Catálogo Completo Atualizado</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1d1d1f] tracking-tight">
+            Escolha seu modelo de <span class="text-[#0071e3]">iPhone</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-[#86868b] mt-1 max-w-xl">
+            Selecione a capacidade e a cor. Garanta 5% OFF à vista via PIX ou parcele em até 12x sem juros!
+          </p>
+        </div>
+
+        <!-- Filter Tabs (Segmented Control Apple) -->
+        <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200 overflow-x-auto max-w-full shrink-0 no-scrollbar">
+          <button onclick="filterCatalog('all', this)" class="catalog-filter-btn active px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition-all bg-white text-[#1d1d1f] shadow-sm whitespace-nowrap">Todos</button>
+          <button onclick="filterCatalog('18-series', this)" class="catalog-filter-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-black transition-all whitespace-nowrap">iPhone 18 Series</button>
+          <button onclick="filterCatalog('17-series', this)" class="catalog-filter-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-black transition-all whitespace-nowrap">Linha 17</button>
+          <button onclick="filterCatalog('entry', this)" class="catalog-filter-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-black transition-all whitespace-nowrap">iPhone 15</button>
+          <button onclick="filterCatalog('accessories', this)" class="catalog-filter-btn px-3 sm:px-4 py-2 rounded-xl text-xs font-medium text-slate-600 hover:text-black transition-all whitespace-nowrap">Watch & Som</button>
+        </div>
+      </div>
+
+      <!-- Products Dynamic Grid -->
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+        <!-- Renderizado dinamicamente via script.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Apple Watch Ultra 3 & Acessórios -->
+  <section id="destaques" class="py-12 sm:py-16 bg-[#f5f5f7] border-t border-slate-200/80 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- Watch Card Highlight -->
+        <div class="lg:col-span-6 bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-8 flex flex-col justify-between shadow-apple motion-reveal">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-600 border border-orange-200/80">
+                LANÇAMENTO SUPREMO
+              </span>
+              <span class="text-xs font-mono text-slate-500">6X SEM JUROS OU PIX</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+              <div>
+                <h3 class="text-xl sm:text-2xl font-black text-[#1d1d1f]">Apple Watch Ultra 3</h3>
+                <p class="text-xs text-[#0071e3] font-semibold mt-1">Feito para quem vai além.</p>
+                
+                <ul class="mt-4 space-y-1.5 text-xs text-slate-600">
+                  <li class="flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-[#0071e3]"></i>
+                    <span>Caixa de Titânio aeroespacial</span>
+                  </li>
+                  <li class="flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-[#0071e3]"></i>
+                    <span>Resistência extrema & Prova d'água</span>
+                  </li>
+                  <li class="flex items-center gap-1.5">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-[#0071e3]"></i>
+                    <span>1 Ano Garantia Oficial Apple</span>
+                  </li>
+                </ul>
+
+                <div class="mt-5">
+                  <div class="text-[10px] text-slate-500 uppercase font-mono">Por apenas no PIX</div>
+                  <div class="text-2xl sm:text-3xl font-black text-[#1d1d1f] font-mono">R$ 3.705<span class="text-xs text-slate-500 font-normal">,00</span></div>
+                  <div class="text-xs text-[#0071e3] font-semibold">ou 6x de R$ 650,00 sem juros</div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-center p-2">
+                <img src="/assets/clean_watch_crop.png" alt="Apple Watch Ultra 3" class="max-h-48 sm:max-h-56 w-auto object-contain rounded-xl cursor-pointer hover:scale-105 transition-transform" onclick="openLightbox('/assets/clean_watch_crop.png', 'Apple Watch Ultra 3')">
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-slate-100 flex gap-2">
+            <button onclick="openPixCheckout('watch-ultra-3')" class="btn-apple-primary flex-1 py-3 px-4 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all">
+              <i data-lucide="zap" class="w-4 h-4 fill-white"></i>
+              <span>Comprar no PIX</span>
+            </button>
+            <a href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Tenho%20interesse%20no%20Apple%20Watch%20Ultra%203%20por%20R%24%203.900%2C00%20visto%20no%20site." target="_blank" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all">
+              <i data-lucide="message-circle" class="w-4 h-4 text-[#0071e3]"></i>
+              <span class="hidden sm:inline">WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Audio & Acessórios Column -->
+        <div class="lg:col-span-6 flex flex-col justify-between gap-6">
+          
+          <!-- Box 1: JBL Boombox 4 -->
+          <div class="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-4 shadow-apple motion-reveal">
+            <img src="/assets/jbl-boombox4.webp" alt="JBL Boombox 4" class="w-24 h-24 sm:w-28 sm:h-28 object-contain shrink-0 cursor-pointer hover:scale-105 transition-transform" onclick="openLightbox('/assets/jbl-boombox4.webp', 'JBL Boombox 4 Camuflada')">
+            <div class="flex-1 text-center sm:text-left space-y-1.5 w-full">
+              <span class="text-[10px] font-bold text-[#0071e3] uppercase">Linha Áudio Premium</span>
+              <h4 class="text-base sm:text-lg font-bold text-[#1d1d1f]">JBL Boombox 4 Camuflada</h4>
+              <p class="text-xs text-slate-500">Até 34h de bateria, conexão Auracast e à prova d'água IP67.</p>
+              <div class="pt-1 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div>
+                  <div class="text-base sm:text-lg font-black text-[#1d1d1f] font-mono">R$ 1.898<span class="text-xs text-slate-500 font-normal">,95</span> <span class="text-[10px] text-emerald-600 font-sans font-bold">PIX</span></div>
+                  <div class="text-[11px] text-[#0071e3] font-semibold">12x de R$ 166,57 sem juros</div>
+                </div>
+                <div class="flex gap-1.5 w-full sm:w-auto">
+                  <button onclick="openPixCheckout('jbl-boombox-4')" class="btn-apple-primary flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white text-xs font-bold transition flex items-center justify-center gap-1 shadow-sm shrink-0">
+                    <i data-lucide="zap" class="w-3.5 h-3.5 fill-white"></i> PIX
+                  </button>
+                  <a href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Tenho%20interesse%20na%20JBL%20Boombox%204%20Camo." target="_blank" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center justify-center gap-1 shrink-0">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5 text-[#0071e3]"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Box 2: Acessórios Originais Apple -->
+          <div class="bg-white border border-slate-200/90 rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-center gap-4 shadow-apple motion-reveal">
+            <img src="/assets/airpods_earbuds.png" alt="AirPods Pro 2" class="w-24 h-24 sm:w-28 sm:h-28 object-contain shrink-0 cursor-pointer hover:scale-105 transition-transform" onclick="openLightbox('/assets/airpods_earbuds.png', 'AirPods Pro 2 Original Apple')">
+            <div class="flex-1 text-center sm:text-left space-y-1 w-full">
+              <span class="text-[10px] font-bold text-[#0071e3] uppercase">Originais Apple</span>
+              <h4 class="text-base sm:text-lg font-bold text-[#1d1d1f]">AirPods Pro 2, Carregadores 20W & Cabos</h4>
+              <p class="text-xs text-slate-500">Cancelamento ativo de ruído, carregadores rápidos e cabos trançados.</p>
+              <div class="pt-2 flex items-center justify-center sm:justify-start gap-3">
+                <a href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Gostaria%20de%20consultar%20valores%20de%20AirPods%20e%20carregadores%20originais." target="_blank" class="w-full sm:w-auto px-4 py-2 sm:py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center justify-center gap-1.5">
+                  <i data-lucide="message-circle" class="w-3.5 h-3.5 text-[#0071e3]"></i> Ver Acessórios
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 💳 CONSULTA DE CPF: ENTRADA PIX / PIX + CARTÃO & PARCELAMENTO NO BOLETO -->
+  <section id="simulador" class="py-12 sm:py-16 relative z-10 scroll-mt-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 motion-reveal">
+      
+      <div class="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-8 shadow-apple">
+        
+        <div class="border-b border-slate-100 pb-5 mb-5">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase mb-2">
+            <i data-lucide="file-check-2" class="w-3.5 h-3.5"></i>
+            <span>Análise Instantânea • Boleto Bancário</span>
+          </div>
+          <h2 class="text-xl sm:text-3xl font-black text-[#1d1d1f] tracking-tight">Consulta ao CPF para Entrada & Boleto</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+            Consulte seu CPF em tempo real para liberação de compra com <strong>Entrada Facilitada no PIX</strong> ou <strong>Entrada PIX com Cartão de Crédito</strong> e parcele o saldo restante em até 24x no boleto bancário sem burocracia.
+          </p>
+
+          <!-- ⚠️ AVISO OBRIGATÓRIO DE SEGURANÇA -->
+          <div class="mt-4 p-3 sm:p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-950 flex items-start gap-2.5">
+            <div class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+            </div>
+            <div class="text-[11px] sm:text-xs leading-relaxed">
+              <strong class="font-extrabold uppercase tracking-wide block text-amber-900 mb-0.5">Aviso Importante de Segurança:</strong>
+              <span class="font-bold text-amber-950">NÃO ACEITAMOS CARTÕES DE CRÉDITO DEVIDO A FRAUDES E GOLPES, SOMENTE ENTRADA POR PIX OU PIX COM CARTÃO DE CRÉDITO.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulário de Consulta ao CPF -->
+        <form id="cpf-consult-form" onsubmit="handleCpfConsultation(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Nome Completo</label>
+              <input 
+                type="text" 
+                id="cpf-consult-name" 
+                required 
+                placeholder="Digite seu nome completo" 
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">CPF para Consulta</label>
+              <input 
+                type="text" 
+                id="cpf-consult-cpf" 
+                required 
+                maxlength="14"
+                oninput="maskCpf(this)"
+                placeholder="000.000.000-00" 
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-mono"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">WhatsApp / Celular com DDD</label>
+              <input 
+                type="tel" 
+                id="cpf-consult-phone" 
+                required 
+                maxlength="15"
+                oninput="maskPhone(this)"
+                placeholder="(00) 00000-0000" 
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-mono"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">iPhone ou Aparelho Desejado</label>
+              <select id="cpf-consult-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
+                <option value="iPhone 18 Pro Max 256GB">iPhone 18 Pro Max 256GB (Lançamento)</option>
+                <option value="iPhone 18 Pro Max 512GB">iPhone 18 Pro Max 512GB (Lançamento)</option>
+                <option value="iPhone 18 Pro 256GB">iPhone 18 Pro 256GB (Lançamento)</option>
+                <option value="iPhone 18 Pro 512GB">iPhone 18 Pro 512GB (Lançamento)</option>
+                <option value="iPhone 17 Pro Max 256GB">iPhone 17 Pro Max 256GB</option>
+                <option value="iPhone 17 Pro 256GB">iPhone 17 Pro 256GB</option>
+                <option value="iPhone 17 256GB">iPhone 17 256GB</option>
+                <option value="iPhone 17E 256GB">iPhone 17E 256GB</option>
+                <option value="iPhone 16 Pro Max 256GB">iPhone 16 Pro Max 256GB</option>
+                <option value="iPhone 16 Pro 128GB">iPhone 16 Pro 128GB</option>
+                <option value="iPhone 15 128GB">iPhone 15 128GB</option>
+                <option value="Apple Watch Ultra 3">Apple Watch Ultra 3</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Forma da Entrada Facilitada</label>
+              <select id="cpf-consult-entry" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
+                <option value="Entrada 100% no PIX (Com 5% OFF)">⚡ Entrada 100% no PIX (Com 5% de desconto)</option>
+                <option value="Entrada PIX com Cartão de Crédito">💳 Entrada PIX com Cartão de Crédito</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Plano no Boleto Bancário</label>
+              <select id="cpf-consult-installments" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
+                <option value="6x no Boleto Bancário">6x no Boleto Bancário</option>
+                <option value="12x no Boleto Bancário" selected>12x no Boleto Bancário (Mais Escolhido)</option>
+                <option value="18x no Boleto Bancário">18x no Boleto Bancário</option>
+                <option value="24x no Boleto Bancário">24x no Boleto Bancário</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span class="text-xs text-slate-500 text-center sm:text-left flex items-center gap-1.5">
+              <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-600"></i>
+              Consulta 100% sigilosa, segura e sem custo.
+            </span>
+            <button 
+              type="submit" 
+              id="cpf-consult-submit-btn" 
+              class="btn-apple-primary w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-sm active:scale-95"
+            >
+              <i data-lucide="file-check" class="w-4 h-4"></i>
+              <span>Consultar CPF & Aprovar Boleto</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Loading State durante a Análise -->
+        <div id="cpf-consult-loading" class="hidden py-10 text-center space-y-3">
+          <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-[#0071e3] border-t-transparent"></div>
+          <h4 class="text-sm font-bold text-[#1d1d1f]">Consultando birôs de crédito e score...</h4>
+          <p class="text-xs text-slate-500">Avaliando limite disponível para emissão no boleto bancário.</p>
+        </div>
+
+        <!-- Resultado Aprovado -->
+        <div id="cpf-consult-result" class="hidden pt-4 space-y-4">
+          <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-200/90 text-left space-y-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold">
+                <i data-lucide="check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-widest block">Análise Concluída</span>
+                <h4 class="text-base sm:text-lg font-black text-emerald-950">PARABÉNS! CPF PRÉ-APROVADO COM SUCESSO</h4>
+              </div>
+            </div>
+
+            <p class="text-xs text-emerald-900 leading-relaxed">
+              Identificamos limite pré-aprovado para liberação do seu aparelho com entrada via PIX ou PIX com Cartão de Crédito e parcelamento do saldo no boleto bancário!
+            </p>
+
+            <div class="bg-white/90 rounded-xl p-3.5 border border-emerald-200 text-xs space-y-1.5 text-slate-700">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Titular:</span>
+                <strong id="res-consult-name" class="text-slate-900 font-bold"></strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">CPF:</span>
+                <strong id="res-consult-cpf" class="text-slate-900 font-mono"></strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Aparelho Selecionado:</span>
+                <strong id="res-consult-model" class="text-[#0071e3] font-bold"></strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Forma da Entrada:</span>
+                <strong id="res-consult-entry" class="text-slate-900 font-semibold"></strong>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Plano no Boleto:</span>
+                <strong id="res-consult-installments" class="text-emerald-700 font-bold"></strong>
+              </div>
+            </div>
+
+            <!-- Botão WhatsApp com dados preenchidos -->
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
+              <a 
+                id="cpf-finish-wa-btn" 
+                href="#" 
+                target="_blank" 
+                class="btn-apple-primary w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm transition active:scale-95"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
+                <span>Finalizar Emissão do Boleto no WhatsApp</span>
+              </a>
+              <button 
+                type="button" 
+                onclick="resetCpfConsultation()" 
+                class="w-full sm:w-auto py-3 px-4 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
+              >
+                Nova Consulta
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 📸 BANNER 16:9 DEDICADO DO IPHONE 18 -->
+  <section id="lancamento-18" class="py-12 sm:py-16 relative z-10 border-t border-slate-200/80">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 motion-reveal">
+      
+      <!-- Container 16:9 Exato no Desktop e Amplo no Mobile -->
+      <div class="relative w-full min-h-[420px] sm:min-h-0 sm:aspect-video rounded-3xl overflow-hidden border border-slate-200 shadow-apple group bg-black">
+        
+        <!-- Imagem 16:9 com Logo StarCell -->
+        <img 
+          src="/assets/banner-flinn-16-9.jpg" 
+          alt="Lançamento iPhone 18 Pro Max - StarCell" 
+          class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+        >
+
+        <!-- Gradiente e Conteúdo Sobreposto na Base do Banner -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-5 sm:p-10">
+          <div class="max-w-2xl space-y-2">
+            <span class="inline-block px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-[#0071e3] text-white uppercase tracking-wider shadow-sm">
+              ✨ LANÇAMENTO OFICIAL • IPHONE 18 SERIES
+            </span>
+            <h3 class="text-xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+              Design Revolucionário em Titânio com Módulo Visor
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-300 line-clamp-3 sm:line-clamp-none leading-relaxed">
+              Cores exclusivas Azul Glacial, Bordô Metálico e Preto Titânio. Câmera tripla de 48MP com zoom aprimorado e chip A19 Pro. 100% lacrados com 1 ano de garantia oficial Apple.
+            </p>
+            
+            <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <button 
+                onclick="openPixCheckout('ip-18-promax')"
+                class="btn-apple-primary w-full sm:w-auto px-6 py-3 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 active:scale-95 transition"
+              >
+                <i data-lucide="zap" class="w-4 h-4 fill-white"></i>
+                <span>Comprar no PIX (5% OFF)</span>
+              </button>
+              <a 
+                href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Vi%20o%20banner%20do%20iPhone%2018%20Pro%20no%20site%20e%20quero%20garantir%20o%20meu." 
+                target="_blank" 
+                class="w-full sm:w-auto px-5 py-3 rounded-xl bg-white/20 hover:bg-white/30 backdrop-blur-md text-white font-bold text-xs uppercase flex items-center justify-center gap-2 transition"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
+                <span>WhatsApp</span>
+              </a>
+              <span class="text-xs text-slate-300 font-mono text-center sm:text-left">
+                A partir de <strong>R$ 8.099,00</strong> em 12x
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CUSTOMER REVIEWS (CLIENTES SATISFEITOS) -->
+  <section id="avaliacoes" class="py-12 sm:py-18 bg-[#f5f5f7] border-t border-slate-200/80 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-10 motion-reveal">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase mb-2">
+          <i data-lucide="star" class="w-3.5 h-3.5 fill-[#0071e3]"></i>
+          <span>Avaliações Reais de Clientes</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1d1d1f] tracking-tight">
+          Clientes Satisfeitos com a <span class="text-[#0071e3]">StarCell</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-[#86868b] mt-1">
+          Transparência total: loja física em Divinópolis - MG e envios com 1 ano de garantia Apple.
+        </p>
+      </div>
+
+      <!-- Reviews Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        
+        <!-- Review 1 -->
+        <div class="bg-white border border-slate-200/90 rounded-3xl p-5 flex flex-col justify-between shadow-apple hover:shadow-apple-hover transition-all duration-300 motion-reveal stagger-1">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1 text-amber-500 font-mono font-bold text-xs">
+                <span>5.0</span>
+                <span>★★★★★</span>
+              </div>
+              <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Compra Verificada
+              </span>
+            </div>
+
+            <div class="w-full h-64 sm:h-56 rounded-2xl overflow-hidden mb-3 bg-slate-100 border border-slate-200/60 cursor-pointer" onclick="openLightbox('/assets/flinn-client-1.jpg', 'Entrega Realizada - StarCell')">
+              <img src="/assets/flinn-client-1.jpg" alt="Entrega Cliente StarCell" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+              "Atendimento impecável! O aparelho veio 100% lacrado, garantia de 1 ano ativada na hora. Peguei direto na loja da Sete de Setembro, recomendo de olhos fechados!"
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-[#1d1d1f]">Cliente Verificado</span>
+            <span class="text-slate-500">Divinópolis - MG</span>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="bg-white border border-slate-200/90 rounded-3xl p-5 flex flex-col justify-between shadow-apple hover:shadow-apple-hover transition-all duration-300 motion-reveal stagger-2">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1 text-amber-500 font-mono font-bold text-xs">
+                <span>4.9</span>
+                <span>★★★★★</span>
+              </div>
+              <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Entrega em Mãos
+              </span>
+            </div>
+
+            <div class="w-full h-64 sm:h-56 rounded-2xl overflow-hidden mb-3 bg-slate-100 border border-slate-200/60 cursor-pointer" onclick="openLightbox('/assets/flinn-client-2.jpg', 'Entrega em Mãos - StarCell')">
+              <img src="/assets/flinn-client-2.jpg" alt="Entrega Noturna iPhone StarCell" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+              "Melhor preço disparado! Consegui desconto no PIX e entregaram em mãos na mesma noite. Aparelho lacrado e com sacola oficial da StarCell. Nota 10!"
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-[#1d1d1f]">Cliente Verificado</span>
+            <span class="text-slate-500">Divinópolis - MG</span>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="bg-white border border-slate-200/90 rounded-3xl p-5 flex flex-col justify-between shadow-apple hover:shadow-apple-hover transition-all duration-300 motion-reveal stagger-3">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1 text-amber-500 font-mono font-bold text-xs">
+                <span>5.0</span>
+                <span>★★★★★</span>
+              </div>
+              <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Cliente VIP
+              </span>
+            </div>
+
+            <div class="w-full h-64 sm:h-56 rounded-2xl overflow-hidden mb-3 bg-slate-100 border border-slate-200/60 cursor-pointer" onclick="openLightbox('/assets/flinn-client-3.jpg', 'Cliente VIP - StarCell')">
+              <img src="/assets/flinn-client-3.jpg" alt="Cliente VIP StarCell" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+              "Comprei meu 18 Pro com eles e a experiência foi fora de série. Aparelho novíssimo, lacrado, me ajudaram em tudo pelo WhatsApp. Podem comprar sem medo!"
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-[#1d1d1f]">Cliente Verificado</span>
+            <span class="text-slate-500">Marília - SP</span>
+          </div>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="bg-white border border-slate-200/90 rounded-3xl p-5 flex flex-col justify-between shadow-apple hover:shadow-apple-hover transition-all duration-300 motion-reveal stagger-4">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1 text-amber-500 font-mono font-bold text-xs">
+                <span>4.8</span>
+                <span>★★★★★</span>
+              </div>
+              <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Usado na Troca
+              </span>
+            </div>
+
+            <div class="w-full h-64 sm:h-56 rounded-2xl overflow-hidden mb-3 bg-slate-100 border border-slate-200/60 cursor-pointer" onclick="openLightbox('/assets/flinn-client-4.jpg', 'Troca de Aparelho com Sucesso')">
+              <img src="/assets/flinn-client-4.jpg" alt="Troca de iPhone StarCell" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+              "Pegaram meu iPhone 13 antigo como parte do pagamento com uma avaliação muito justa. Paguei a diferença e já saí de iPhone novo na hora. Recomendo muito!"
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-[#1d1d1f]">Cliente Verificado</span>
+            <span class="text-slate-500">Araçatuba - SP</span>
+          </div>
+        </div>
+
+        <!-- Review 5 -->
+        <div class="bg-white border border-slate-200/90 rounded-3xl p-5 flex flex-col justify-between shadow-apple hover:shadow-apple-hover transition-all duration-300 motion-reveal stagger-5">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1 text-amber-500 font-mono font-bold text-xs">
+                <span>4.9</span>
+                <span>★★★★★</span>
+              </div>
+              <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Compra Verificada
+              </span>
+            </div>
+
+            <div class="w-full h-64 sm:h-56 rounded-2xl overflow-hidden mb-3 bg-slate-100 border border-slate-200/60 cursor-pointer" onclick="openLightbox('/assets/flinn-client-5.jpg', 'Entrega Realizada StarCell')">
+              <img src="/assets/flinn-client-5.jpg" alt="Cliente StarCell" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+              "Já é o segundo iPhone que compro com a equipe StarCell. O suporte responde na hora pelo WhatsApp e o envio foi expresso com rastreamento atualizado. Loja nota 10!"
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-[#1d1d1f]">Cliente Verificado</span>
+            <span class="text-slate-500">Divinópolis - MG</span>
+          </div>
+        </div>
+
+        <!-- Review 6 -->
+        <div class="bg-white border border-slate-200/90 rounded-3xl p-5 flex flex-col justify-between shadow-apple hover:shadow-apple-hover transition-all duration-300 motion-reveal stagger-6">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-1 text-amber-500 font-mono font-bold text-xs">
+                <span>4.8</span>
+                <span>★★★★★</span>
+              </div>
+              <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Envio com Seguro
+              </span>
+            </div>
+
+            <div class="w-full h-64 sm:h-56 rounded-2xl overflow-hidden mb-3 bg-blue-50/50 border border-blue-100 flex flex-col items-center justify-center p-4 text-center">
+              <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-[#0071e3] mb-2 shadow-sm">
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
+              </div>
+              <span class="text-xs font-bold text-[#1d1d1f] block">Envio 100% Assegurado</span>
+              <span class="text-[11px] text-slate-500">Rastreamento Sedex + Seguro Total de Carga</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed italic">
+              "Moro fora e estava receoso de comprar à distância. Fui super bem atendido pelo número 55 16 99765-5257, me passaram o código de rastreio e chegou impecável com lacre original."
+            </p>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-[#1d1d1f]">Cliente Verificado</span>
+            <span class="text-slate-500">Envio Seguro Brasil</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-12 sm:py-16 relative z-10">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 motion-reveal">
+      
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase mb-2">
+          <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+          <span>Tire Suas Dúvidas</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1d1d1f] tracking-tight">Perguntas Frequentes & Garantia</h2>
+      </div>
+
+      <div class="space-y-3">
+        <div class="faq-item bg-white border border-slate-200/90 rounded-2xl p-4 cursor-pointer hover:border-[#0071e3]/40 transition-colors shadow-sm" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-sm text-[#1d1d1f]">Os aparelhos são realmente novos e lacrados?</h4>
+            <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-[#0071e3] transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content hidden mt-2.5 pt-2.5 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+            Sim! Todos os nossos iPhones são 100% originais, novos de fábrica e com os lacres da Apple intactos. Você mesmo rompe o lacre ao receber.
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-slate-200/90 rounded-2xl p-4 cursor-pointer hover:border-[#0071e3]/40 transition-colors shadow-sm" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-sm text-[#1d1d1f]">Como funciona a garantia de 1 ano Apple?</h4>
+            <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-[#0071e3] transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content hidden mt-2.5 pt-2.5 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+            A garantia é mundial e oficial da Apple. Ela começa a contar a partir do momento em que você liga o iPhone pela primeira vez. Atendimento em qualquer Apple Store oficial do Brasil.
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-slate-200/90 rounded-2xl p-4 cursor-pointer hover:border-[#0071e3]/40 transition-colors shadow-sm" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-sm text-[#1d1d1f]">Quais são as formas de pagamento disponíveis?</h4>
+            <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-[#0071e3] transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content hidden mt-2.5 pt-2.5 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+            Aceitamos PIX com 5% de desconto imediato através do nosso checkout integrado oficial, cartão parcelado em até 12x SEM JUROS (ou em até 18x facilitado), além de retirada presencial em nossa loja de Divinópolis - MG.
+          </div>
+        </div>
+
+        <div class="faq-item bg-white border border-slate-200/90 rounded-2xl p-4 cursor-pointer hover:border-[#0071e3]/40 transition-colors shadow-sm" onclick="toggleFaq(this)">
+          <div class="flex items-center justify-between gap-4">
+            <h4 class="font-bold text-sm text-[#1d1d1f]">Como acompanho a entrega do meu pedido?</h4>
+            <i data-lucide="chevron-down" class="faq-chevron w-4 h-4 text-[#0071e3] transition-transform duration-300"></i>
+          </div>
+          <div class="faq-content hidden mt-2.5 pt-2.5 border-t border-slate-100 text-xs text-slate-600 leading-relaxed">
+            Assim que seu pedido é despachado, você recebe o código de rastreamento oficial. Você pode acompanhar em tempo real acessando a nossa página <a href="/rastreio" class="text-[#0071e3] underline font-semibold">Rastrear Pedido</a>.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer (APPLE CLEAN LIGHT) -->
+  <footer class="bg-[#f5f5f7] border-t border-slate-200/80 py-10 relative z-10 text-slate-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        
+        <div class="space-y-3 md:col-span-2">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-xl overflow-hidden border border-slate-200 bg-white p-0.5 shadow-sm flex items-center justify-center">
+              <img src="/assets/starcell-logo.png?v=blue_v2" alt="StarCell" class="w-full h-full object-contain rounded-lg">
+            </div>
+            <div>
+              <div class="font-mono font-black text-base text-[#1d1d1f]">
+                <span>StarCell</span> <span class="text-[#0071e3]">iPHONES</span> <span class="text-[9px] px-1 py-0.5 rounded bg-blue-50 text-[#0071e3] border border-blue-200">STORE</span>
+              </div>
+              <p class="text-[10px] text-slate-500">Qualidade, Segurança & Procedência Apple</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 max-w-sm leading-relaxed">
+            Especialistas em produtos Apple novos e lacrados. Loja física em Divinópolis - MG, garantia mundial de 1 ano Apple, parcelamento em até 12x sem juros, 5% OFF no PIX e envios seguros para todo o Brasil.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <h5 class="text-xs font-bold text-[#1d1d1f] uppercase tracking-wider">Navegação Rápida</h5>
+          <ul class="space-y-1.5 text-xs text-slate-600">
+            <li><a href="#catalogo" class="hover:text-[#0071e3] transition-colors">Catálogo Completo</a></li>
+            <li><a href="#lancamento-18" class="hover:text-[#0071e3] transition-colors">Lançamentos 18 Series</a></li>
+            <li><a href="/rastreio" class="hover:text-[#0071e3] text-[#1d1d1f] font-semibold transition-colors flex items-center gap-1">
+              <i data-lucide="truck" class="w-3.5 h-3.5 text-[#0071e3]"></i>
+              <span>Rastrear Encomenda</span>
+            </a></li>
+            <li><a href="#simulador" class="hover:text-[#0071e3] transition-colors">Consulta CPF & Boleto</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-2">
+          <h5 class="text-xs font-bold text-[#1d1d1f] uppercase tracking-wider">Atendimento & Endereço</h5>
+          <ul class="space-y-1.5 text-xs text-slate-600">
+            <li class="flex items-start gap-1.5">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#0071e3] mt-0.5 shrink-0"></i>
+              <span class="text-slate-800">Av. Sete de Setembro, 783 - Centro, Divinópolis - MG, 35500-011</span>
+            </li>
+            <li class="flex items-center gap-1.5">
+              <i data-lucide="phone" class="w-3.5 h-3.5 text-[#0071e3] shrink-0"></i>
+              <span>55 16 99765-5257</span>
+            </li>
+            <li class="flex items-center gap-1.5">
+              <i data-lucide="truck" class="w-3.5 h-3.5 text-[#0071e3] shrink-0"></i>
+              <span>Envio com seguro para todo o Brasil</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500">
+        <div>
+          © 2026 StarCell. Todos os direitos reservados.
+        </div>
+        <div class="flex items-center gap-4">
+          <!-- 🔒 CADEADO DISCRETO NO RODAPÉ -->
+          <a href="/admin" title="Painel Administrativo" class="text-slate-500 hover:text-[#0071e3] transition flex items-center gap-1">
+            <i data-lucide="lock" class="w-3 h-3 text-[#0071e3]"></i>
+            <span>Painel do Lojista</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Floating Quick WhatsApp Button -->
+  <aside aria-label="Atendimento rápido no WhatsApp" class="fixed bottom-5 right-5 z-40 flex items-center group">
+    <a 
+      href="https://wa.me/5516997655257?text=Ol%C3%A1%2C%20StarCell!%20Gostaria%20de%20atendimento%20r%C3%A1pido." 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      aria-label="Conversar no WhatsApp da StarCell"
+      class="btn-apple-primary relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+    >
+      <i data-lucide="message-circle" class="w-6 h-6 sm:w-7 sm:h-7 fill-white"></i>
+      <span class="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[#0071e3] border-2 border-white animate-pulse"></span>
+    </a>
+  </aside>
+
+  <!-- ========================================================
+       ⚡ CHECKOUT PIX MODAL (INTEGRAÇÃO SCALA PIX GATEWAY)
+       ======================================================== -->
+  <div id="pix-checkout-modal" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-7 shadow-apple-modal border border-slate-100 modal-enter my-auto relative">
+      
+      <!-- Botão Fechar Modal -->
+      <button onclick="closePixCheckout()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800 p-1.5 rounded-full hover:bg-slate-100 transition focus:outline-none" aria-label="Fechar">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- ETAPA 1: Dados do Cliente & Resumo do Produto -->
+      <div id="checkout-step-1" class="space-y-4">
+        
+        <!-- Header do Checkout -->
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0071e3] flex items-center justify-center font-bold">
+            <i data-lucide="zap" class="w-4 h-4 fill-[#0071e3]"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-[#1d1d1f]">Checkout Expresso PIX</h3>
+            <p class="text-[11px] text-slate-500">Pagamento instantâneo com 5% de desconto oficial</p>
+          </div>
+        </div>
+
+        <!-- ⚠️ AVISO IMPORTANTE DE SEGURANÇA (CHECKOUT) -->
+        <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-2.5">
+          <div class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+            <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+          </div>
+          <div class="text-[11px] leading-relaxed text-amber-950">
+            <strong class="font-extrabold uppercase tracking-wide block text-amber-900 mb-0.5">Aviso Importante de Segurança:</strong>
+            <span class="font-bold text-amber-950">NÃO ACEITAMOS CARTÕES DE CRÉDITO DEVIDO A FRAUDES E GOLPES, SOMENTE ENTRADA POR PIX OU PIX COM CARTÃO DE CRÉDITO.</span>
+          </div>
+        </div>
+
+        <!-- Resumo do Produto Selecionado -->
+        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-200/70">
+          <div class="w-14 h-14 rounded-xl bg-white p-1.5 border border-slate-200/60 flex items-center justify-center shrink-0">
+            <img id="checkout-product-img" src="" alt="" class="w-full h-full object-contain">
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 id="checkout-product-name" class="font-black text-sm text-[#1d1d1f] truncate"></h4>
+            <p id="checkout-product-details" class="text-xs text-slate-500"></p>
+            <div class="flex items-center gap-2 mt-1">
+              <span id="checkout-original-price" class="text-xs text-slate-400 line-through"></span>
+              <span id="checkout-pix-price" class="text-sm font-black text-[#0071e3] font-mono"></span>
+              <span class="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.2 rounded font-bold">5% OFF</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulário do Comprador -->
+        <form onsubmit="submitPixCheckout(event)" class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nome Completo</label>
+            <input 
+              type="text" 
+              id="checkout-customer-name" 
+              required 
+              placeholder="Digite seu nome completo"
+              class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0071e3] focus:bg-white transition"
+            >
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">CPF (Chave PIX)</label>
+              <input 
+                type="text" 
+                id="checkout-customer-cpf" 
+                required 
+                maxlength="14"
+                oninput="maskCpf(this)"
+                placeholder="000.000.000-00"
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0071e3] focus:bg-white transition font-mono"
+              >
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">WhatsApp / Telefone</label>
+              <input 
+                type="tel" 
+                id="checkout-customer-phone" 
+                required 
+                maxlength="15"
+                oninput="maskPhone(this)"
+                placeholder="(00) 00000-0000"
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0071e3] focus:bg-white transition font-mono"
+              >
+            </div>
+          </div>
+
+          <!-- Tipo de Entrega -->
+          <div class="pt-1">
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1.5">Forma de Retirada / Envio</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-[#0071e3] transition">
+                <input type="radio" name="delivery-type" value="store" checked onchange="toggleDeliveryFields()" class="text-[#0071e3] focus:ring-0">
+                <div class="text-left">
+                  <div class="text-[11px] font-bold text-[#1d1d1f]">Retirada na Loja</div>
+                  <div class="text-[9px] text-slate-500">Divinópolis - MG</div>
+                </div>
+              </label>
+
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer hover:border-[#0071e3] transition">
+                <input type="radio" name="delivery-type" value="shipping" onchange="toggleDeliveryFields()" class="text-[#0071e3] focus:ring-0">
+                <div class="text-left">
+                  <div class="text-[11px] font-bold text-[#1d1d1f]">Envio Seguro</div>
+                  <div class="text-[9px] text-slate-500">Todo o Brasil (Sedex)</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div id="delivery-address-container" class="hidden">
+            <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Endereço de Entrega & CEP</label>
+            <input 
+              type="text" 
+              id="checkout-customer-address" 
+              placeholder="Rua, Número, Bairro, Cidade - UF e CEP"
+              class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-[#0071e3] focus:bg-white transition"
+            >
+          </div>
+
+          <div class="pt-2">
+            <button 
+              type="submit" 
+              id="checkout-submit-btn"
+              class="btn-apple-primary w-full py-3.5 px-4 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all"
+            >
+              <span>Avançar para Pagamento PIX</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- ETAPA 2: QR Code Pix & Copia e Cola -->
+      <div id="checkout-step-2" class="hidden space-y-4 text-center">
+        
+        <div class="space-y-1">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Cobrança Gerada com Sucesso
+          </span>
+          <h3 class="font-extrabold text-lg text-[#1d1d1f]">Pague via PIX para Confirmar</h3>
+          <p class="text-xs text-slate-500">Abra o app do seu banco e escaneie o QR Code ou use o Copia e Cola:</p>
+        </div>
+
+        <!-- Valor & Timer -->
+        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-200">
+          <div class="text-left">
+            <span class="text-[10px] text-slate-500 uppercase block font-mono">Valor com 5% de Desconto</span>
+            <span id="pix-amount-display" class="text-xl font-black text-[#1d1d1f] font-mono"></span>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-slate-500 uppercase block font-mono">Expira em</span>
+            <span id="pix-timer" class="text-base font-black text-[#0071e3] font-mono">15:00</span>
+          </div>
+        </div>
+
+        <!-- Moldura Elegante do QR Code -->
+        <div class="flex justify-center my-2">
+          <div class="p-3 bg-white border-2 border-slate-200/90 rounded-2xl shadow-sm inline-block">
+            <img id="pix-qr-img" src="" alt="QR Code PIX" class="w-52 h-52 object-contain mx-auto">
+          </div>
+        </div>
+
+        <!-- ⚠️ Micro Aviso de Segurança no QR Code -->
+        <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200/80 text-[10px] sm:text-[11px] text-amber-900 flex items-center justify-center gap-1.5 font-medium">
+          <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i>
+          <span><strong>Aviso:</strong> Não aceitamos cartões de crédito devido a fraudes e golpes. Somente entrada por PIX ou PIX com cartão de crédito.</span>
+        </div>
+
+        <!-- Campo Pix Copia e Cola -->
+        <div class="space-y-1.5">
+          <label class="block text-[11px] font-bold text-slate-700 uppercase text-left">Código Pix Copia e Cola:</label>
+          <div class="flex items-center gap-2">
+            <input 
+              type="text" 
+              id="pix-copia-cola" 
+              readonly 
+              class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-mono text-slate-700 focus:outline-none"
+            >
+            <button 
+              type="button" 
+              id="pix-copy-btn"
+              onclick="copyPixCode()" 
+              class="btn-apple-primary px-4 py-2 bg-[#0071e3] hover:bg-[#0077ed] text-white rounded-xl text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-sm active:scale-95 transition-all"
+            >
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Copiar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Status em Tempo Real -->
+        <div class="flex items-center justify-center gap-2 pt-2 text-xs text-slate-600">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#0071e3] pix-waiting-pulse"></span>
+          <span>Aguardando identificação do pagamento...</span>
+        </div>
+
+        <!-- Botão de Verificação / Demonstração -->
+        <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+          <button 
+            type="button" 
+            id="pix-simulate-btn"
+            onclick="simulatePixPayment()" 
+            class="text-[#0071e3] hover:underline font-semibold"
+          >
+            Já realizou o pagamento? Clique para verificar
+          </button>
+          <span class="text-slate-400 font-mono text-[10px]">ID: <span id="pix-order-id-display"></span></span>
+        </div>
+
+      </div>
+
+      <!-- ETAPA 3: Sucesso & Confirmação de Pagamento -->
+      <div id="checkout-step-3" class="hidden space-y-4 text-center py-2">
+        <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
+          <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+        </div>
+
+        <div class="space-y-1">
+          <h3 class="font-black text-2xl text-[#1d1d1f]">Pagamento Confirmado!</h3>
+          <p class="text-xs text-slate-600">Seu pedido foi registrado e está pronto para separação e envio imediato.</p>
+        </div>
+
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-1 text-left">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Código do Pedido:</span>
+            <span id="success-order-id" class="font-mono font-black text-[#0071e3]"></span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Garantia:</span>
+            <span class="font-bold text-[#1d1d1f]">1 Ano Oficial Apple</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-500 font-medium">Status:</span>
+            <span class="text-emerald-700 font-bold">Aprovado via PIX</span>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-2">
+          <a 
+            id="success-tracking-link" 
+            href="/rastreio"
+            class="btn-apple-primary w-full py-3 px-4 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase flex items-center justify-center gap-2 shadow-sm transition-all"
+          >
+            <i data-lucide="truck" class="w-4 h-4"></i>
+            <span>Acompanhar Meu Pedido</span>
+          </a>
+
+          <a 
+            id="success-wa-btn" 
+            href="" 
+            target="_blank"
+            class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-all"
+          >
+            <i data-lucide="message-circle" class="w-4 h-4 text-[#0071e3]"></i>
+            <span>Enviar Comprovante no WhatsApp</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Lightbox Modal for Photo Zoom -->
+  <div id="lightbox-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
+      <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white hover:text-[#0071e3] p-1.5 focus:outline-none">
+        <i data-lucide="x" class="w-7 h-7"></i>
+      </button>
+      <img id="lightbox-img" src="" alt="" class="max-h-[80vh] w-auto max-w-full rounded-2xl object-contain border border-white/10 shadow-2xl">
+      <p id="lightbox-caption" class="text-white text-xs sm:text-sm font-semibold mt-3 text-center"></p>
+    </div>
+  </div>
+
+  <!-- Custom Scripts -->
+  <script src="/script.js?v=starcell_v3"></script>
+</body>
+</html>

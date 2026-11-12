@@ -243,8 +243,36 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Arquivos Estáticos (Front-end, CSS, JS, Imagens)
-app.use(express.static(path.join(__dirname, 'public')));
+// ========================================================
+// 📁 LOCALIZADOR FLEXÍVEL DE ARQUIVOS ESTÁTICOS
+// (Compatível tanto com pasta public/ quanto com raiz no Render)
+// ========================================================
+const fs = require('fs');
+
+function resolvePublicPath(relativePath) {
+  const candidates = [
+    path.join(__dirname, 'public', relativePath),
+    path.join(__dirname, relativePath),
+    path.join(process.cwd(), 'public', relativePath),
+    path.join(process.cwd(), relativePath)
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) return p;
+  }
+  return path.join(__dirname, 'public', relativePath);
+}
+
+// Servir arquivos estáticos de múltiplos locais com fallback automático
+if (fs.existsSync(path.join(__dirname, 'public'))) {
+  app.use(express.static(path.join(__dirname, 'public')));
+}
+if (fs.existsSync(path.join(__dirname, 'public', 'assets'))) {
+  app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
+}
+if (fs.existsSync(path.join(__dirname, 'assets'))) {
+  app.use('/assets', express.static(path.join(__dirname, 'assets')));
+}
+app.use(express.static(__dirname));
 
 // ========================================================
 // ⚡ INTEGRAÇÃO API PIX (SCALA & BACKEND CHECKOUT)
@@ -441,22 +469,22 @@ app.post('/api/pix/webhook', (req, res) => {
 app.use('/api/admin', adminRoutes);
 app.use('/api/tracking', trackingRoutes);
 
-// Rotas Amigáveis
+// Rotas Amigáveis com Localizador Flexível
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+  res.sendFile(resolvePublicPath('admin.html'));
 });
 
 app.get('/rastreio', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'rastreio.html'));
+  res.sendFile(resolvePublicPath('rastreio.html'));
 });
 
 app.get('/catalogo', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(resolvePublicPath('index.html'));
 });
 
 // Fallback para SPA / Home
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(resolvePublicPath('index.html'));
 });
 
 app.listen(PORT, () => {
