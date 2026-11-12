@@ -272,6 +272,54 @@ if (fs.existsSync(path.join(__dirname, 'public', 'assets'))) {
 if (fs.existsSync(path.join(__dirname, 'assets'))) {
   app.use('/assets', express.static(path.join(__dirname, 'assets')));
 }
+
+// 🖼️ ROTEADOR INTELIGENTE DE ASSETS / IMAGENS
+// Garante que qualquer requisição /assets/<arquivo> entregue a imagem mesmo se ela estiver na raiz!
+app.use('/assets', (req, res, next) => {
+  const filename = path.basename(req.path);
+  const possiblePaths = [
+    path.join(__dirname, 'public', 'assets', filename),
+    path.join(__dirname, 'assets', filename),
+    path.join(__dirname, 'public', filename),
+    path.join(__dirname, filename),
+    path.join(process.cwd(), 'public', 'assets', filename),
+    path.join(process.cwd(), 'assets', filename),
+    path.join(process.cwd(), filename)
+  ];
+
+  for (const p of possiblePaths) {
+    try {
+      if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+        return res.sendFile(p);
+      }
+    } catch (e) {}
+  }
+  next();
+});
+
+// Suporte direto a qualquer extensão de imagem
+app.get(/\.(png|jpg|jpeg|webp|gif|svg|ico)$/i, (req, res, next) => {
+  const filename = path.basename(req.path);
+  const possiblePaths = [
+    path.join(__dirname, 'public', 'assets', filename),
+    path.join(__dirname, 'assets', filename),
+    path.join(__dirname, 'public', filename),
+    path.join(__dirname, filename),
+    path.join(process.cwd(), 'public', 'assets', filename),
+    path.join(process.cwd(), 'assets', filename),
+    path.join(process.cwd(), filename)
+  ];
+
+  for (const p of possiblePaths) {
+    try {
+      if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+        return res.sendFile(p);
+      }
+    } catch (e) {}
+  }
+  next();
+});
+
 app.use(express.static(__dirname));
 
 // ========================================================
