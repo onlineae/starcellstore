@@ -3,9 +3,237 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const adminRoutes = require('./routes/admin');
-const trackingRoutes = require('./routes/tracking');
 const db = require('./database');
+const { dbHelpers } = db;
+
+// ========================================================
+// 🔐 ROTAS DE LOGÍSTICA & RASTREAMENTO PÚBLICO
+// ========================================================
+let trackingRoutes = null;
+try {
+  trackingRoutes = require('./routes/tracking');
+} catch (e) {
+  try {
+    trackingRoutes = require('./tracking');
+  } catch (e2) {}
+}
+
+if (!trackingRoutes) {
+  trackingRoutes = express.Router();
+  trackingRoutes.get('/:code', async (req, res) => {
+    try {
+      const code = req.params.code;
+      if (!code || code.trim().length === 0) {
+        return res.status(400).json({ success: false, error: 'Código de rastreamento não fornecido.' });
+      }
+
+      const orderData = await dbHelpers.getOrderByTrackingCode(code);
+      if (!orderData) {
+        return res.status(404).json({
+          success: false,
+          error: 'Código de rastreamento não localizado no sistema. Verifique os dígitos e tente novamente.'
+        });
+      }
+
+      res.json({
+        success: true,
+        data: {
+          tracking_code: orderData.tracking_code,
+          status: orderData.status,
+          customer_name_masked: orderData.customer_name ? (orderData.customer_name.split(' ')[0] + ' ***') : 'Cliente',
+          destination: `${orderData.city} / ${orderData.state}`,
+          items_description: orderData.items_description || 'Produto Apple Original Lacrado',
+          created_at: orderData.created_at,
+          updated_at: orderData.updated_at,
+          checkpoints: orderData.checkpoints || []
+        }
+      });
+    } catch (error) {
+      console.error('Erro na consulta de rastreio:', error);
+      res.status(500).json({ success: false, error: 'Erro interno ao consultar rastreamento.' });
+    }
+  });
+}
+
+// ========================================================
+// 🔐 ROTAS DE ADMINISTRAÇÃO & GESTÃO
+// ========================================================
+let adminRoutes = null;
+try {
+  adminRoutes = require('./routes/admin');
+} catch (e) {
+  try {
+    adminRoutes = require('./admin');
+  } catch (e2) {}
+}
+
+if (!adminRoutes) {
+  adminRoutes = express.Router();
+  let cachedPassword = '6666';
+
+  async function requireAdminAuth(req, res, next) {
+    const authPassword = req.headers['x-admin-password'] || req.headers['authorization'];
+    if (!authPassword) {
+      return res.status(401).json({ success: false, error: 'Acesso negado. Senha não fornecida.' });
+    }
+
+    const cleanAuth = authPassword.replace('Bearer ', '').trim();
+    if (cleanAuth !== cachedPassword) {
+      try {
+        const currentDbPassword = await dbHelpers.getSetting('admin_password');
+        if (currentDbPassword) cachedPassword = currentDbPassword;
+      } catch (e) {}
+
+      if (cleanAuth !== cachedPassword) {
+        return res.status(401).json({ success: false, error: 'Acesso negado. Senha incorreta.' });
+      }
+    }
+    next();
+  }
+
+  adminRoutes.post('/login', async (req, res) => {
+    try {
+      const { password } = req.body;
+      let currentPassword = cachedPassword;
+      try {
+        const dbPwd = await dbHelpers.getSetting('admin_password');
+        if (dbPwd) {
+          currentPassword = dbPwd;
+          cachedPassword = dbPwd;
+        }
+      } catch (e) {}
+
+      if (password === currentPassword) {
+        return res.json({ success: true, message: 'Autenticado com sucesso!', token: currentPassword });
+      } else {
+        return res.status(401).json({ success: false, error: 'Senha incorreta.' });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, error: 'Erro no servidor de autenticação.' });
+    }
+  });
+
+  adminRoutes.use(requireAdminAuth);
+
+  adminRoutes.get('/generate-code', async (req, res) => {
+    try {
+      const code = await dbHelpers.generateTrackingCode();
+      res.json({ success: true, code });
+    } catch (error) {
+      res.status(500).json({ success: false, error: 'Erro ao gerar código de rastreamento.' });
+    }
+  });
+
+  adminRoutes.get('/orders', async (req, res) => {
+    try {
+      const orders = await dbHelpers.getAllOrders();
+      const info = dbHelpers.getDatabaseInfo();
+      res.json({ success: true, orders, database: info });
+    } catch (error) {
+      console.error('Erro ao buscar pedidos:', error);
+      res.status(500).json({ success: false, error: 'Erro ao buscar pedidos no servidor.' });
+    }
+  });
+
+  adminRoutes.post('/orders', async (req, res) => {
+    try {
+      const { customer_name, customer_phone, address, number, complement, neighborhood, city, state, cep, items_description, tracking_code } = req.body;
+      if (!customer_name || !address || !cep) {
+        return res.status(400).json({ success: false, error: 'Preencha os campos obrigatórios: Nome do Cliente, Endereço e CEP.' });
+      }
+
+      const newOrder = await dbHelpers.createOrder({
+        customer_name,
+        customer_phone,
+        address,
+        number,
+        complement,
+        neighborhood,
+        city: city || 'Divinópolis',
+        state: state || 'MG',
+        cep,
+        items_description: items_description || 'iPhone Original Lacrado',
+        tracking_code
+      });
+
+      res.status(201).json({ success: true, message: 'Envio cadastrado e código gerado com sucesso!', order: newOrder });
+    } catch (error) {
+      console.error('Erro ao cadastrar envio:', error);
+      res.status(500).json({ success: false, error: 'Erro ao criar envio no servidor.' });
+    }
+  });
+
+  adminRoutes.get('/orders/:id', async (req, res) => {
+    try {
+      const order = await dbHelpers.getOrderById(req.params.id);
+      if (!order) return res.status(404).json({ success: false, error: 'Envio não encontrado.' });
+      res.json({ success: true, order });
+    } catch (error) {
+      res.status(500).json({ success: false, error: 'Erro ao buscar detalhes do envio.' });
+    }
+  });
+
+  adminRoutes.post('/orders/:id/checkpoints', async (req, res) => {
+    try {
+      const { status, description, location, timestamp } = req.body;
+      if (!status || !description) {
+        return res.status(400).json({ success: false, error: 'Informe o status e a descrição da movimentação.' });
+      }
+
+      await dbHelpers.addCheckpoint(
+        req.params.id,
+        status,
+        description,
+        location || 'Divinópolis / MG',
+        timestamp
+      );
+
+      const updatedOrder = await dbHelpers.getOrderById(req.params.id);
+      res.json({ success: true, message: 'Movimentação adicionada ao rastreio com sucesso!', order: updatedOrder });
+    } catch (error) {
+      console.error('Erro ao adicionar movimentação:', error);
+      res.status(500).json({ success: false, error: 'Erro ao atualizar rastreamento.' });
+    }
+  });
+
+  adminRoutes.delete('/orders/:id', async (req, res) => {
+    try {
+      await dbHelpers.deleteOrder(req.params.id);
+      res.json({ success: true, message: 'Envio excluído com sucesso.' });
+    } catch (error) {
+      res.status(500).json({ success: false, error: 'Erro ao excluir envio.' });
+    }
+  });
+
+  adminRoutes.get('/settings', async (req, res) => {
+    try {
+      const settings = await dbHelpers.getAllSettings();
+      res.json({ success: true, settings });
+    } catch (error) {
+      res.status(500).json({ success: false, error: 'Erro ao buscar configurações.' });
+    }
+  });
+
+  adminRoutes.post('/settings', async (req, res) => {
+    try {
+      const { admin_password, whatsapp_number, address, city, state, company_name, cnpj } = req.body;
+      if (admin_password) {
+        await dbHelpers.setSetting('admin_password', admin_password);
+        cachedPassword = admin_password;
+      }
+      if (whatsapp_number) await dbHelpers.setSetting('whatsapp_number', whatsapp_number);
+      if (address) await dbHelpers.setSetting('address', address);
+      if (cnpj) await dbHelpers.setSetting('cnpj', cnpj);
+      if (city) await dbHelpers.setSetting('city', city);
+      if (state) await dbHelpers.setSetting('state', state);
+      if (company_name) await dbHelpers.setSetting('company_name', company_name);
+
+      res.json({ success: true, message: 'Configurações atualizadas com sucesso!' });
+    } catch (error) {
+      res.status(500).json({ success: false, error: 'Erro ao salvar configurações.' });
+    }
+  });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -48,119 +276,77 @@ function generatePixCopiaECola({ chave, nome, cidade, valor, txid }) {
   }
 
   const gui = formatField('00', 'br.gov.bcb.pix');
-  const keyField = formatField('01', cleanKey);
-  const accountInfo = formatField('26', `${gui}${keyField}`);
-  const catCode = formatField('52', '0000');
-  const currency = formatField('53', '986');
-  const amountField = formatField('54', formattedValor);
-  const country = formatField('58', 'BR');
-  const nameField = formatField('59', cleanName);
-  const cityField = formatField('60', cleanCity);
-  const txidField = formatField('05', cleanTxid);
-  const addData = formatField('62', txidField);
+  const key = formatField('01', cleanKey);
+  const merchantAccountInfo = formatField('26', `${gui}${key}`);
+  const payloadFormatIndicator = formatField('00', '01');
+  const merchantCategoryCode = formatField('52', '0000');
+  const transactionCurrency = formatField('53', '986');
+  const transactionAmount = formatField('54', formattedValor);
+  const countryCode = formatField('58', 'BR');
+  const merchantNameField = formatField('59', cleanName);
+  const merchantCityField = formatField('60', cleanCity);
+  const additionalDataField = formatField('62', formatField('05', cleanTxid));
 
-  const rawPayload = `000201${accountInfo}${catCode}${currency}${amountField}${country}${nameField}${cityField}${addData}6304`;
+  const rawPayload = `${payloadFormatIndicator}${merchantAccountInfo}${merchantCategoryCode}${transactionCurrency}${transactionAmount}${countryCode}${merchantNameField}${merchantCityField}${additionalDataField}6304`;
 
-  // Cálculo CRC16-CCITT
-  let crc = 0xFFFF;
-  for (let i = 0; i < rawPayload.length; i++) {
-    crc ^= (rawPayload.charCodeAt(i) << 8);
-    for (let j = 0; j < 8; j++) {
-      if ((crc & 0x8000) !== 0) {
-        crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
-      } else {
-        crc = (crc << 1) & 0xFFFF;
+  function crc16(str) {
+    let crc = 0xFFFF;
+    for (let c = 0; c < str.length; c++) {
+      crc ^= str.charCodeAt(c) << 8;
+      for (let i = 0; i < 8; i++) {
+        if (crc & 0x8000) {
+          crc = (crc << 1) ^ 0x1021;
+        } else {
+          crc = crc << 1;
+        }
       }
     }
+    return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
   }
-  const crcHex = (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
-  return `${rawPayload}${crcHex}`;
+
+  return `${rawPayload}${crc16(rawPayload)}`;
 }
 
-// 🛒 Criar Transação Pix no Checkout
-app.post('/api/pix/create', async (req, res) => {
+// 🛒 Criar Cobrança Pix Imediata
+app.post('/api/pix/create-charge', async (req, res) => {
   try {
     const { product, customer } = req.body;
 
-    if (!product || !customer) {
-      return res.status(400).json({ error: 'Dados do produto e cliente são obrigatórios.' });
+    if (!product || !product.price || !customer || !customer.name || !customer.cpf) {
+      return res.status(400).json({ error: 'Dados incompletos para gerar a cobrança Pix.' });
     }
 
     const orderId = `FLN-${Math.floor(100000 + Math.random() * 900000)}`;
-    const txid = `PIX${Date.now().toString().slice(-8)}${Math.floor(Math.random() * 900 + 100)}`;
-    const rawPrice = parseFloat(product.price) || 0;
-    // 5% de desconto no Pix
-    const finalAmount = Math.max(1, +(rawPrice * 0.95).toFixed(2));
+    const finalAmount = parseFloat((product.price * 0.95).toFixed(2));
 
-    let pixCode = '';
-    let qrCodeUrl = '';
-    let provider = 'Local Gateway';
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 15 * 60 * 1000);
 
-    // Se as credenciais da API Scala estiverem presentes no .env:
-    if (SCALA_CONFIG.apiKey && SCALA_CONFIG.apiKey.trim() !== '') {
-      try {
-        console.log(`📡 [Scala Pix] Chamando API Scala para o pedido ${orderId}...`);
-        const response = await fetch(`${SCALA_CONFIG.baseUrl}/v1/charges/pix`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SCALA_CONFIG.apiKey}`
-          },
-          body: JSON.stringify({
-            amount: Math.round(finalAmount * 100), // centavos
-            description: `${product.name} ${product.storage || ''} - StarCell`,
-            customer: {
-              name: customer.name,
-              tax_id: customer.cpf.replace(/\D/g, ''),
-              phone: customer.phone.replace(/\D/g, '')
-            },
-            metadata: { orderId }
-          })
-        });
+    const pixCode = generatePixCopiaECola({
+      chave: SCALA_CONFIG.pixKey,
+      nome: SCALA_CONFIG.merchantName,
+      cidade: SCALA_CONFIG.merchantCity,
+      valor: finalAmount,
+      txid: orderId
+    });
 
-        if (response.ok) {
-          const scalaData = await response.json();
-          pixCode = scalaData.emv_payload || scalaData.qr_code_text || scalaData.copy_paste;
-          qrCodeUrl = scalaData.qr_code_url || `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(pixCode)}`;
-          provider = 'Scala Pix API';
-        } else {
-          console.warn('⚠️ [Scala Pix] Retorno não-200 da Scala. Usando gerador padrão.');
-        }
-      } catch (err) {
-        console.error('⚠️ [Scala Pix] Erro de conexão com API Scala. Alternando para gerador padrão:', err.message);
-      }
-    }
-
-    // Gerador de Pix EMV padrão caso Scala não retorne ou não esteja configurada
-    if (!pixCode) {
-      pixCode = generatePixCopiaECola({
-        chave: SCALA_CONFIG.pixKey,
-        nome: SCALA_CONFIG.merchantName,
-        cidade: SCALA_CONFIG.merchantCity,
-        valor: finalAmount,
-        txid: txid
-      });
-      qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(pixCode)}`;
-    }
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
 
     const orderData = {
       orderId,
-      txid,
       product,
       customer,
       finalAmount,
-      originalAmount: rawPrice,
       pixCode,
       qrCodeUrl,
-      provider,
       status: 'PENDING',
-      createdAt: new Date().toISOString(),
-      expiresAt: new Date(Date.now() + 15 * 60 * 1000).toISOString()
+      createdAt: now.toISOString(),
+      expiresAt: expiresAt.toISOString(),
+      paidAt: null
     };
 
     pixOrders.set(orderId, orderData);
 
-    // Salva ou registra pré-ordem na logística para rastreio
     try {
       if (typeof db.createOrder === 'function') {
         db.createOrder({
@@ -184,17 +370,16 @@ app.post('/api/pix/create', async (req, res) => {
       finalAmount,
       pixCode,
       qrCodeUrl,
-      provider,
-      expiresAt: orderData.expiresAt
+      expiresAt: expiresAt.toISOString()
     });
 
-  } catch (err) {
-    console.error('Erro ao gerar Pix:', err);
-    res.status(500).json({ error: 'Erro interno ao gerar cobrança PIX.' });
+  } catch (error) {
+    console.error('Erro ao gerar cobrança Pix:', error);
+    res.status(500).json({ error: 'Falha ao processar pagamento Pix.' });
   }
 });
 
-// 🔍 Consultar Status do Pix
+// 🔍 Consultar Status do Pedido Pix
 app.get('/api/pix/status/:orderId', (req, res) => {
   const { orderId } = req.params;
   const order = pixOrders.get(orderId);
@@ -203,7 +388,6 @@ app.get('/api/pix/status/:orderId', (req, res) => {
     return res.status(404).json({ error: 'Pedido não encontrado.' });
   }
 
-  // Verifica expiração
   if (order.status === 'PENDING' && new Date() > new Date(order.expiresAt)) {
     order.status = 'EXPIRED';
   }
@@ -253,7 +437,7 @@ app.post('/api/pix/webhook', (req, res) => {
   res.status(200).json({ received: true });
 });
 
-// Rotas da API existentes
+// Rotas da API
 app.use('/api/admin', adminRoutes);
 app.use('/api/tracking', trackingRoutes);
 
