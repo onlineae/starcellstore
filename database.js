@@ -5,10 +5,10 @@ const defaultSettings = {
   admin_password: '6666', // 🔐 Senha solicitada pelo usuário
   whatsapp_number: '5516997655257',
   phone_landline: '5516997655257',
-  address: 'Av. Sete de Setembro, 783 - Centro, Divinópolis - MG, 35500-011',
+  address: 'Av. Carlos Antonio Lopez y, Av. Adrián Jara 6850, Cd. del Este, Paraguai',
   cnpj: '04.014.240/0001-04',
-  city: 'Divinópolis',
-  state: 'MG',
+  city: 'Cd. del Este',
+  state: 'Paraguai',
   company_name: 'StarCell'
 };
 
@@ -390,7 +390,7 @@ const dbHelpers = {
       orderId,
       'Objeto postado',
       `Mercadoria lacrada recebida na agência de envios expressos.`,
-      `Divinópolis / MG`,
+      `Cd. del Este / Paraguai`,
       now
     );
 

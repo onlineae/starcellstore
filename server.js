@@ -149,8 +149,8 @@ if (!adminRoutes) {
         number,
         complement,
         neighborhood,
-        city: city || 'Divinópolis',
-        state: state || 'MG',
+        city: city || 'Cd. del Este',
+        state: state || 'Paraguai',
         cep,
         items_description: items_description || 'iPhone Original Lacrado',
         tracking_code
@@ -184,7 +184,7 @@ if (!adminRoutes) {
         req.params.id,
         status,
         description,
-        location || 'Divinópolis / MG',
+        location || 'Cd. del Este / Paraguai',
         timestamp
       );
 
@@ -332,7 +332,7 @@ const SCALA_CONFIG = {
   baseUrl: process.env.SCALA_BASE_URL || 'https://api.scalapagamentos.com.br',
   pixKey: process.env.PIX_KEY || '5516997655257',
   merchantName: 'STARCELL',
-  merchantCity: 'DIVINOPOLIS'
+  merchantCity: 'CIUDAD DEL ESTE'
 };
 
 // Armazenamento em memória das transações Pix
@@ -429,9 +429,9 @@ app.post('/api/pix/create-charge', async (req, res) => {
           tracking_code: orderId,
           customer_name: customer.name || 'Cliente StarCell',
           customer_phone: customer.phone || '',
-          address: customer.address || 'Loja Física - Av. Sete de Setembro, 783',
-          city: customer.city || 'Divinópolis',
-          state: customer.state || 'MG',
+          address: customer.address || 'Loja Física - Av. Carlos Antonio Lopez y, Av. Adrián Jara 6850',
+          city: customer.city || 'Cd. del Este',
+          state: customer.state || 'Paraguai',
           product_name: `${product.name} ${product.storage || ''} (${product.color || ''})`,
           product_value: finalAmount
         });

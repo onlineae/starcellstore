@@ -4,9 +4,9 @@
 
 const STORE_CONFIG = {
   storeName: "StarCell",
-  address: "Av. Sete de Setembro, 783 - Centro, Divinópolis - MG, 35500-011",
+  address: "Av. Carlos Antonio Lopez y, Av. Adrián Jara 6850, Cd. del Este, Paraguai",
   cnpj: "04.014.240/0001-04",
-  cityState: "Divinópolis - MG",
+  cityState: "Cd. del Este - Paraguai",
   whatsappNumber: "5516997655257", // WhatsApp: 55 16 99765-5257
   instagramUrl: "https://www.instagram.com/starcell.oficial/",
   pixDiscountPercent: 5
@@ -476,7 +476,7 @@ function generateWhatsAppLink(product, storage, color) {
 
   if (storage.price) {
     const pixPrice = (storage.price * 0.95).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    text = `Olá, StarCell! Tenho interesse no ${product.name} ${storage.capacity} na cor ${color.name} por ${pixPrice} à vista no PIX (ou entrada PIX / PIX com cartão de crédito e parcelamento no boleto). Estou ciente do aviso: NÃO ACEITAMOS CARTÕES DE CRÉDITO DEVIDO A FRAUDES E GOLPES, SOMENTE ENTRADA POR PIX OU PIX COM CARTÃO DE CRÉDITO. Gostaria de saber os detalhes para retirar na loja de Divinópolis - MG ou envio com seguro!`;
+    text = `Olá, StarCell! Tenho interesse no ${product.name} ${storage.capacity} na cor ${color.name} por ${pixPrice} à vista no PIX (ou entrada PIX / PIX com cartão de crédito e parcelamento no boleto). Estou ciente do aviso: NÃO ACEITAMOS CARTÕES DE CRÉDITO DEVIDO A FRAUDES E GOLPES, SOMENTE ENTRADA POR PIX OU PIX COM CARTÃO DE CRÉDITO. Gostaria de saber os detalhes para retirar na loja de Cd. del Este - Paraguai ou envio com seguro!`;
   } else {
     text = `Olá, StarCell! Gostaria de consultar valores e disponibilidade para ${product.name} que vi no site.`;
   }
@@ -505,7 +505,7 @@ function sendTradeInWhatsApp() {
   const targetPhone = document.getElementById('trade-target-phone').value;
   const notes = document.getElementById('trade-notes').value.trim();
 
-  let message = `Olá, StarCell! Gostaria de simular a troca do meu aparelho usado na loja física (Av. Sete de Setembro, 783 - Centro, Divinópolis - MG, CEP 35500-011):\n\n📱 Meu aparelho atual: ${userPhone}\n🎯 Modelo que quero pegar: ${targetPhone}`;
+  let message = `Olá, StarCell! Gostaria de simular a troca do meu aparelho usado na loja física (Av. Carlos Antonio Lopez y, Av. Adrián Jara 6850, Cd. del Este, Paraguai):\n\n📱 Meu aparelho atual: ${userPhone}\n🎯 Modelo que quero pegar: ${targetPhone}`;
   if (notes) {
     message += `\n📝 Detalhes e saúde da bateria: ${notes}`;
   }
@@ -659,7 +659,31 @@ async function submitPixCheckout(event) {
   const cpf = document.getElementById('checkout-customer-cpf').value.trim();
   const phone = document.getElementById('checkout-customer-phone').value.trim();
   const deliveryType = document.querySelector('input[name="delivery-type"]:checked')?.value || 'store';
-  const address = deliveryType === 'store' ? 'Retirada na Loja Oficial (Av. Sete de Setembro, 783 - Centro, Divinópolis - MG)' : document.getElementById('checkout-customer-address').value.trim();
+  let address = '';
+
+  if (deliveryType === 'store') {
+    address = 'Retirada na Loja Oficial (Av. Carlos Antonio Lopez y, Av. Adrián Jara 6850, Cd. del Este, Paraguai)';
+  } else {
+    const cep = document.getElementById('checkout-customer-cep')?.value.trim() || '';
+    const street = document.getElementById('checkout-customer-street')?.value.trim() || '';
+    const number = document.getElementById('checkout-customer-number')?.value.trim() || '';
+    const complement = document.getElementById('checkout-customer-complement')?.value.trim() || '';
+    const citystate = document.getElementById('checkout-customer-citystate')?.value.trim() || '';
+
+    if (!cep || cep.replace(/\D/g, '').length < 8) {
+      alert('Por favor, informe um CEP válido para a entrega.');
+      document.getElementById('checkout-customer-cep')?.focus();
+      return;
+    }
+
+    if (!number) {
+      alert('Por favor, informe o número da sua residência / casa.');
+      document.getElementById('checkout-customer-number')?.focus();
+      return;
+    }
+
+    address = `${street || 'Endereço'}, nº ${number}${complement ? ' (' + complement + ')' : ''} - ${citystate} • CEP: ${cep}`;
+  }
 
   if (!name || !cpf || !phone) {
     alert('Por favor, preencha todos os campos obrigatórios.');
@@ -716,7 +740,7 @@ async function submitPixCheckout(event) {
     const mockData = {
       orderId: simulatedOrderId,
       finalAmount: parseFloat(pixVal),
-      pixCode: `00020126580014br.gov.bcb.pix0114+55169976552575204000053039865406${pixVal}5802BR5913StarCell IPHONES6011DIVINOPOLIS62070503***6304E8A2`,
+      pixCode: `00020126580014br.gov.bcb.pix0114+55169976552575204000053039865406${pixVal}5802BR5913StarCell IPHONES6015CIUDAD DEL ESTE62070503***6304E8A2`,
       qrCodeUrl: `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=STARCELL-PIX-${simulatedOrderId}`
     };
     currentOrderId = simulatedOrderId;
@@ -848,12 +872,80 @@ function toggleDeliveryFields() {
   if (addressContainer) {
     if (deliveryType === 'shipping') {
       addressContainer.classList.remove('hidden');
-      document.getElementById('checkout-customer-address').required = true;
+      const cepInput = document.getElementById('checkout-customer-cep');
+      if (cepInput && !cepInput.value) {
+        setTimeout(() => cepInput.focus(), 100);
+      }
     } else {
       addressContainer.classList.add('hidden');
-      document.getElementById('checkout-customer-address').required = false;
     }
   }
+}
+
+// 📍 BUSCA AUTOMÁTICA DE CEP VIA API VIACEP & NÚMERO DA CASA
+let cepDebounceTimer = null;
+async function handleCheckoutCep(input) {
+  let v = input.value.replace(/\D/g, "");
+  if (v.length > 8) v = v.slice(0, 8);
+  if (v.length > 5) {
+    v = v.replace(/^(\d{5})(\d)/, "$1-$2");
+  }
+  input.value = v;
+
+  const rawCep = v.replace(/\D/g, "");
+  const statusEl = document.getElementById('cep-status');
+  const spinnerEl = document.getElementById('cep-loading-spinner');
+  const autoFields = document.getElementById('delivery-fields-auto');
+  const numberInput = document.getElementById('checkout-customer-number');
+
+  if (rawCep.length < 8) {
+    if (statusEl) statusEl.innerText = "Digite o CEP para buscar rua";
+    if (spinnerEl) spinnerEl.classList.add('hidden');
+    return;
+  }
+
+  if (statusEl) statusEl.innerHTML = '<span class="text-[#0071e3]">Buscando dados da rua...</span>';
+  if (spinnerEl) spinnerEl.classList.remove('hidden');
+
+  clearTimeout(cepDebounceTimer);
+  cepDebounceTimer = setTimeout(async () => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${rawCep}/json/`);
+      const data = await response.json();
+
+      if (spinnerEl) spinnerEl.classList.add('hidden');
+
+      if (!data.erro) {
+        if (autoFields) autoFields.classList.remove('hidden');
+        const streetInput = document.getElementById('checkout-customer-street');
+        const citystateInput = document.getElementById('checkout-customer-citystate');
+
+        if (streetInput) streetInput.value = `${data.logradouro || ''}${data.bairro ? ' - ' + data.bairro : ''}`;
+        if (citystateInput) citystateInput.value = `${data.localidade || ''} - ${data.uf || ''}`;
+
+        if (statusEl) statusEl.innerHTML = '<span class="text-emerald-600 font-bold">✅ Endereço localizado!</span>';
+
+        if (numberInput) {
+          numberInput.focus();
+        }
+      } else {
+        if (autoFields) autoFields.classList.remove('hidden');
+        if (statusEl) statusEl.innerHTML = '<span class="text-amber-600 font-medium">CEP não encontrado. Preencha a rua:</span>';
+        const streetInput = document.getElementById('checkout-customer-street');
+        if (streetInput) {
+          streetInput.readOnly = false;
+          streetInput.focus();
+        }
+      }
+    } catch (e) {
+      console.warn('Erro ao consultar ViaCEP:', e);
+      if (spinnerEl) spinnerEl.classList.add('hidden');
+      if (autoFields) autoFields.classList.remove('hidden');
+      if (statusEl) statusEl.innerHTML = '<span class="text-slate-500">Preencha o endereço abaixo:</span>';
+      const streetInput = document.getElementById('checkout-customer-street');
+      if (streetInput) streetInput.readOnly = false;
+    }
+  }, 300);
 }
 
 // Máscara automática de CPF

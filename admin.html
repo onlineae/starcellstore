@@ -450,7 +450,7 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Localização:</label>
-          <input type="text" id="modalLocation" required placeholder="Ex: Divinópolis / MG ou Belo Horizonte / MG" class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue">
+          <input type="text" id="modalLocation" required placeholder="Ex: Cd. del Este / Paraguai ou São Paulo / SP" class="w-full bg-black/60 border border-brand-border rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-brand-blue">
         </div>
 
         <div class="pt-3 flex justify-end gap-3">
@@ -768,7 +768,7 @@
     function openCheckpointModal(orderId, trackingCode) {
       document.getElementById('modalOrderId').value = orderId;
       document.getElementById('modalTrackingCode').innerText = `Código: ${trackingCode}`;
-      document.getElementById('modalLocation').value = 'Divinópolis / MG';
+      document.getElementById('modalLocation').value = 'Cd. del Este / Paraguai';
       document.getElementById('modalDescription').value = '';
       document.getElementById('checkpointModal').classList.remove('hidden');
       document.getElementById('checkpointModal').classList.add('flex');
