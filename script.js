@@ -143,6 +143,26 @@ const PRODUCTS = [
     selectedColorIndex: 0
   },
   {
+    id: "ip-16",
+    name: "iPhone 16",
+    category: "16-series",
+    badge: "🔥 Super Oferta 256GB",
+    badgeColor: "bg-emerald-50 text-emerald-700 border border-emerald-300",
+    specs: "Chip A18 com Apple Intelligence • Câmera Fusion 48MP • Controle de Câmera • 256GB Nativo",
+    warranty: "1 Ano Garantia Apple",
+    maxInstallments: 12,
+    storages: [
+      { capacity: "256GB", price: 3236.90, formattedPrice: "R$ 3.236,90", installment: "12x de R$ 269,74" }
+    ],
+    colors: [
+      { name: "Branco", hex: "#f1f2f4", image: "/assets/ip16_white.png" },
+      { name: "Preto", hex: "#1e1e20", image: "/assets/ip16_black.png" },
+      { name: "Verde Teal", hex: "#82b9b3", image: "/assets/ip16_teal.png" }
+    ],
+    selectedStorageIndex: 0,
+    selectedColorIndex: 0
+  },
+  {
     id: "ip-15",
     name: "iPhone 15",
     category: "entry",
@@ -993,7 +1013,7 @@ function initMotionDesign() {
   });
 }
 
-// 💳 PREÇOS OFICIAIS DE REFERÊNCIA PARA O SIMULADOR DE ENTRADA (22%)
+// 💳 PREÇOS OFICIAIS DE REFERÊNCIA PARA O SIMULADOR DE ENTRADA
 const MODEL_PRICES = {
   "iPhone 18 Pro Max 256GB": 8999,
   "iPhone 18 Pro Max 512GB": 9499,
@@ -1003,6 +1023,7 @@ const MODEL_PRICES = {
   "iPhone 17 Pro 256GB": 6000,
   "iPhone 17 256GB": 4500,
   "iPhone 17E 256GB": 3200,
+  "iPhone 16 256GB": 3236.90,
   "iPhone 16 Pro Max 256GB": 5800,
   "iPhone 16 Pro 128GB": 4900,
   "iPhone 15 128GB": 3000,
@@ -1012,7 +1033,7 @@ const MODEL_PRICES = {
 
 let cpfLoadingInterval = null;
 
-// 💳 CONSULTA DE CPF PARA ENTRADA FACILITADA (22%) & PARCELAMENTO NO BOLETO (78%)
+// 💳 CONSULTA DE CPF PARA ENTRADA FACILITADA & PARCELAMENTO NO BOLETO
 function handleCpfConsultation(e) {
   if (e) e.preventDefault();
   const nameInput = document.getElementById('cpf-consult-name');
@@ -1027,8 +1048,8 @@ function handleCpfConsultation(e) {
   const name = nameInput.value.trim();
   const cpf = cpfInput.value.trim();
   const phone = phoneInput.value.trim();
-  const model = modelInput ? modelInput.value : 'iPhone 18 Pro Max 256GB';
-  const entry = entryInput ? entryInput.value : 'Entrada de 22% no PIX';
+  const model = modelInput ? modelInput.value : 'iPhone 16 256GB';
+  const entry = entryInput ? entryInput.value : 'Entrada Facilitada no PIX';
   const installmentsCount = installmentsInput ? parseInt(installmentsInput.value, 10) || 12 : 12;
 
   if (!name || !cpf || !phone) {
@@ -1037,7 +1058,7 @@ function handleCpfConsultation(e) {
   }
 
   // Obter preço base do modelo selecionado
-  let totalPrice = 8999;
+  let totalPrice = 3236.90;
   if (modelInput && modelInput.selectedOptions && modelInput.selectedOptions[0]) {
     const dataPrice = parseFloat(modelInput.selectedOptions[0].getAttribute('data-price'));
     if (!isNaN(dataPrice) && dataPrice > 0) {
@@ -1047,7 +1068,7 @@ function handleCpfConsultation(e) {
     totalPrice = MODEL_PRICES[model];
   }
 
-  // REGRA ESTRITA: ENTRADA DE EXATAMENTE 22% E SALDO DE 78% NO BOLETO
+  // REGRA DE CÁLCULO INTERNO: ENTRADA DE 22% E SALDO DE 78% NO BOLETO (NUNCA EXIBIR A FRASE 22% PRO CLIENTE)
   const entryValue = totalPrice * 0.22;
   const balanceValue = totalPrice * 0.78;
   const installmentValue = balanceValue / installmentsCount;
@@ -1083,7 +1104,7 @@ function handleCpfConsultation(e) {
     if (progressBar) progressBar.style.width = `${progress}%`;
     if (progressCounter) progressCounter.innerText = `${progress}%`;
 
-    // Atualização dinâmica das etapas de análise
+    // Atualização dinâmica das etapas de análise (sem mencionar porcentagens)
     if (elapsed < 1500) {
       if (loadingTitle) loadingTitle.innerText = "🔍 Conectando aos birôs de crédito e Receita Federal...";
       if (loadingDesc) loadingDesc.innerText = "Consultando registro oficial do CPF e verificando pontuação inicial.";
@@ -1091,8 +1112,8 @@ function handleCpfConsultation(e) {
       if (loadingTitle) loadingTitle.innerText = "📊 Analisando histórico e pontuação de Score...";
       if (loadingDesc) loadingDesc.innerText = "Score aprovado para crédito facilitado sem burocracia bancária.";
     } else if (elapsed < 4500) {
-      if (loadingTitle) loadingTitle.innerText = "💰 Calculando taxa de entrada facilitada (22%)...";
-      if (loadingDesc) loadingDesc.innerText = `Fixando 22% de entrada (${entryValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}) e saldo no boleto.`;
+      if (loadingTitle) loadingTitle.innerText = "💰 Calculando condição especial de entrada facilitada...";
+      if (loadingDesc) loadingDesc.innerText = "Liberando menor valor de entrada para faturamento e saldo no boleto.";
     } else {
       if (loadingTitle) loadingTitle.innerText = "⚡ Emitindo limite pré-aprovado no boleto bancário...";
       if (loadingDesc) loadingDesc.innerText = "Tudo pronto! Gerando proposta oficial de liberação imediata.";
@@ -1128,19 +1149,19 @@ function handleCpfConsultation(e) {
       if (elInstallmentsText) elInstallmentsText.innerText = `${installmentsCount}x no Boleto Bancário Sem Juros`;
       if (elEntry) elEntry.innerText = entry;
 
-      // Mensagem direta WhatsApp com cálculos exatos de 22% e aviso
-      const message = `Olá, StarCell! Realizei a consulta de CPF no site oficial e fui PRÉ-APROVADO para compra no boleto com entrada facilitada de 22%:
+      // Mensagem direta WhatsApp com cálculos exatos do aparelho (sem porcentagens)
+      const message = `Olá, StarCell! Realizei a consulta de CPF no site oficial e fui PRÉ-APROVADO para compra no boleto com entrada facilitada:
 
 👤 *Titular:* ${name}
 📄 *CPF:* ${cpf}
 📱 *WhatsApp:* ${phone}
 🎯 *Aparelho:* ${model}
 💵 *Valor Total do Aparelho:* ${formatBRL(totalPrice)}
-⚡ *Entrada Facilitada (22%):* ${formatBRL(entryValue)}
-📑 *Saldo Financiado (78%):* ${installmentsCount}x de ${formatBRL(installmentValue)} no Boleto Bancário Sem Juros
+⚡ *Entrada Facilitada:* ${formatBRL(entryValue)}
+📑 *Saldo Financiado no Boleto:* ${installmentsCount}x de ${formatBRL(installmentValue)} Sem Juros
 💳 *Forma da Entrada:* ${entry}
 
-⚠️ *Ciente do Regulamento de Segurança:* Estou ciente de que NÃO ACEITAM CARTÕES DE CRÉDITO PARA PAGAMENTO DO SALDO TOTAL DEVIDO A FRAUDES E GOLPES, SOMENTE A ENTRADA DE 22% POR PIX OU PIX COM CARTÃO DE CRÉDITO.
+⚠️ *Ciente do Regulamento de Segurança:* Estou ciente de que NÃO ACEITAM CARTÕES DE CRÉDITO PARA PAGAMENTO DO SALDO TOTAL DEVIDO A FRAUDES E GOLPES, SOMENTE A ENTRADA FACILITADA POR PIX OU PIX COM CARTÃO DE CRÉDITO.
 
 Gostaria de formalizar meu contrato e garantir meu aparelho!`;
 
