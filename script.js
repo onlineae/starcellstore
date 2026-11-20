@@ -993,7 +993,26 @@ function initMotionDesign() {
   });
 }
 
-// 💳 CONSULTA DE CPF PARA ENTRADA PIX / PIX + CARTÃO & PARCELAMENTO NO BOLETO
+// 💳 PREÇOS OFICIAIS DE REFERÊNCIA PARA O SIMULADOR DE ENTRADA (22%)
+const MODEL_PRICES = {
+  "iPhone 18 Pro Max 256GB": 8999,
+  "iPhone 18 Pro Max 512GB": 9499,
+  "iPhone 18 Pro 256GB": 8099,
+  "iPhone 18 Pro 512GB": 8799,
+  "iPhone 17 Pro Max 256GB": 6900,
+  "iPhone 17 Pro 256GB": 6000,
+  "iPhone 17 256GB": 4500,
+  "iPhone 17E 256GB": 3200,
+  "iPhone 16 Pro Max 256GB": 5800,
+  "iPhone 16 Pro 128GB": 4900,
+  "iPhone 15 128GB": 3000,
+  "Apple Watch Ultra 3": 3900,
+  "JBL Boombox 4 Camuflada": 1998.90
+};
+
+let cpfLoadingInterval = null;
+
+// 💳 CONSULTA DE CPF PARA ENTRADA FACILITADA (22%) & PARCELAMENTO NO BOLETO (78%)
 function handleCpfConsultation(e) {
   if (e) e.preventDefault();
   const nameInput = document.getElementById('cpf-consult-name');
@@ -1008,63 +1027,144 @@ function handleCpfConsultation(e) {
   const name = nameInput.value.trim();
   const cpf = cpfInput.value.trim();
   const phone = phoneInput.value.trim();
-  const model = modelInput ? modelInput.value : 'iPhone';
-  const entry = entryInput ? entryInput.value : 'Entrada PIX';
-  const installments = installmentsInput ? installmentsInput.value : '12x no Boleto';
+  const model = modelInput ? modelInput.value : 'iPhone 18 Pro Max 256GB';
+  const entry = entryInput ? entryInput.value : 'Entrada de 22% no PIX';
+  const installmentsCount = installmentsInput ? parseInt(installmentsInput.value, 10) || 12 : 12;
 
   if (!name || !cpf || !phone) {
     alert('Por favor, preencha todos os campos obrigatórios para consulta.');
     return;
   }
 
+  // Obter preço base do modelo selecionado
+  let totalPrice = 8999;
+  if (modelInput && modelInput.selectedOptions && modelInput.selectedOptions[0]) {
+    const dataPrice = parseFloat(modelInput.selectedOptions[0].getAttribute('data-price'));
+    if (!isNaN(dataPrice) && dataPrice > 0) {
+      totalPrice = dataPrice;
+    }
+  } else if (MODEL_PRICES[model]) {
+    totalPrice = MODEL_PRICES[model];
+  }
+
+  // REGRA ESTRITA: ENTRADA DE EXATAMENTE 22% E SALDO DE 78% NO BOLETO
+  const entryValue = totalPrice * 0.22;
+  const balanceValue = totalPrice * 0.78;
+  const installmentValue = balanceValue / installmentsCount;
+
   const form = document.getElementById('cpf-consult-form');
   const loading = document.getElementById('cpf-consult-loading');
   const result = document.getElementById('cpf-consult-result');
+  const progressBar = document.getElementById('cpf-progress-bar');
+  const progressCounter = document.getElementById('cpf-progress-counter');
+  const loadingTitle = document.getElementById('cpf-loading-title');
+  const loadingDesc = document.getElementById('cpf-loading-desc');
 
   if (form) form.classList.add('hidden');
+  if (result) result.classList.add('hidden');
   if (loading) loading.classList.remove('hidden');
 
-  setTimeout(() => {
-    if (loading) loading.classList.add('hidden');
-    if (result) result.classList.remove('hidden');
+  // Rolagem suave até o simulador
+  const simuladorEl = document.getElementById('simulador');
+  if (simuladorEl) {
+    simuladorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
-    const elName = document.getElementById('res-consult-name');
-    const elCpf = document.getElementById('res-consult-cpf');
-    const elModel = document.getElementById('res-consult-model');
-    const elEntry = document.getElementById('res-consult-entry');
-    const elInstallments = document.getElementById('res-consult-installments');
+  // TELA DE CARREGAMENTO DE EXATAMENTE 6 SEGUNDOS (6000ms) COM ETAPAS
+  if (cpfLoadingInterval) clearInterval(cpfLoadingInterval);
 
-    if (elName) elName.innerText = name;
-    if (elCpf) elCpf.innerText = cpf;
-    if (elModel) elModel.innerText = model;
-    if (elEntry) elEntry.innerText = entry;
-    if (elInstallments) elInstallments.innerText = installments;
+  const startTime = Date.now();
+  const totalDuration = 6000; // 6 segundos exatos
 
-    const message = `Olá, StarCell! Realizei a consulta de CPF no site oficial e fui PRÉ-APROVADO para compra com boleto bancário:
+  cpfLoadingInterval = setInterval(() => {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(100, Math.floor((elapsed / totalDuration) * 100));
 
-👤 *Nome:* ${name}
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (progressCounter) progressCounter.innerText = `${progress}%`;
+
+    // Atualização dinâmica das etapas de análise
+    if (elapsed < 1500) {
+      if (loadingTitle) loadingTitle.innerText = "🔍 Conectando aos birôs de crédito e Receita Federal...";
+      if (loadingDesc) loadingDesc.innerText = "Consultando registro oficial do CPF e verificando pontuação inicial.";
+    } else if (elapsed < 3000) {
+      if (loadingTitle) loadingTitle.innerText = "📊 Analisando histórico e pontuação de Score...";
+      if (loadingDesc) loadingDesc.innerText = "Score aprovado para crédito facilitado sem burocracia bancária.";
+    } else if (elapsed < 4500) {
+      if (loadingTitle) loadingTitle.innerText = "💰 Calculando taxa de entrada facilitada (22%)...";
+      if (loadingDesc) loadingDesc.innerText = `Fixando 22% de entrada (${entryValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}) e saldo no boleto.`;
+    } else {
+      if (loadingTitle) loadingTitle.innerText = "⚡ Emitindo limite pré-aprovado no boleto bancário...";
+      if (loadingDesc) loadingDesc.innerText = "Tudo pronto! Gerando proposta oficial de liberação imediata.";
+    }
+
+    if (elapsed >= totalDuration) {
+      clearInterval(cpfLoadingInterval);
+      cpfLoadingInterval = null;
+
+      if (loading) loading.classList.add('hidden');
+      if (result) result.classList.remove('hidden');
+
+      // Preenchimento dos dados calculados
+      const elName = document.getElementById('res-consult-name');
+      const elCpf = document.getElementById('res-consult-cpf');
+      const elModel = document.getElementById('res-consult-model');
+      const elTotal = document.getElementById('res-consult-total-val');
+      const elEntryVal = document.getElementById('res-consult-entry-val');
+      const elBalanceVal = document.getElementById('res-consult-balance-val');
+      const elInstallmentsVal = document.getElementById('res-consult-installments-val');
+      const elInstallmentsText = document.getElementById('res-consult-installments-text');
+      const elEntry = document.getElementById('res-consult-entry');
+
+      const formatBRL = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+      if (elName) elName.innerText = name;
+      if (elCpf) elCpf.innerText = cpf;
+      if (elModel) elModel.innerText = model;
+      if (elTotal) elTotal.innerText = formatBRL(totalPrice);
+      if (elEntryVal) elEntryVal.innerText = formatBRL(entryValue);
+      if (elBalanceVal) elBalanceVal.innerText = formatBRL(balanceValue);
+      if (elInstallmentsVal) elInstallmentsVal.innerText = `${installmentsCount}x de ${formatBRL(installmentValue)}`;
+      if (elInstallmentsText) elInstallmentsText.innerText = `${installmentsCount}x no Boleto Bancário Sem Juros`;
+      if (elEntry) elEntry.innerText = entry;
+
+      // Mensagem direta WhatsApp com cálculos exatos de 22% e aviso
+      const message = `Olá, StarCell! Realizei a consulta de CPF no site oficial e fui PRÉ-APROVADO para compra no boleto com entrada facilitada de 22%:
+
+👤 *Titular:* ${name}
 📄 *CPF:* ${cpf}
 📱 *WhatsApp:* ${phone}
 🎯 *Aparelho:* ${model}
-💳 *Forma de Entrada:* ${entry}
-📑 *Parcelamento:* ${installments}
+💵 *Valor Total do Aparelho:* ${formatBRL(totalPrice)}
+⚡ *Entrada Facilitada (22%):* ${formatBRL(entryValue)}
+📑 *Saldo Financiado (78%):* ${installmentsCount}x de ${formatBRL(installmentValue)} no Boleto Bancário Sem Juros
+💳 *Forma da Entrada:* ${entry}
 
-⚠️ *Aviso Lido:* Estou ciente de que NÃO ACEITAM CARTÕES DE CRÉDITO DEVIDO A FRAUDES E GOLPES, SOMENTE ENTRADA POR PIX OU PIX COM CARTÃO DE CRÉDITO.
+⚠️ *Ciente do Regulamento de Segurança:* Estou ciente de que NÃO ACEITAM CARTÕES DE CRÉDITO PARA PAGAMENTO DO SALDO TOTAL DEVIDO A FRAUDES E GOLPES, SOMENTE A ENTRADA DE 22% POR PIX OU PIX COM CARTÃO DE CRÉDITO.
 
-Gostaria de formalizar o contrato e retirada ou envio com seguro!`;
+Gostaria de formalizar meu contrato e garantir meu aparelho!`;
 
-    const waBtn = document.getElementById('cpf-finish-wa-btn');
-    if (waBtn) {
-      waBtn.href = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+      const waBtn = document.getElementById('cpf-finish-wa-btn');
+      if (waBtn) {
+        waBtn.href = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+      }
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+
+      if (simuladorEl) {
+        simuladorEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
-
-    if (window.lucide) {
-      lucide.createIcons();
-    }
-  }, 1400);
+  }, 100);
 }
 
 function resetCpfConsultation() {
+  if (cpfLoadingInterval) {
+    clearInterval(cpfLoadingInterval);
+    cpfLoadingInterval = null;
+  }
   const form = document.getElementById('cpf-consult-form');
   const result = document.getElementById('cpf-consult-result');
   const loading = document.getElementById('cpf-consult-loading');

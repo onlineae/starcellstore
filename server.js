@@ -323,13 +323,14 @@ app.get(/\.(png|jpg|jpeg|webp|gif|svg|ico)$/i, (req, res, next) => {
 app.use(express.static(__dirname));
 
 // ========================================================
-// ⚡ INTEGRAÇÃO API PIX (SCALA & BACKEND CHECKOUT)
+// ⚡ INTEGRAÇÃO API PIX (SCALA PAG & BACKEND CHECKOUT)
 // ========================================================
 
 const SCALA_CONFIG = {
-  apiKey: process.env.SCALA_API_KEY || '',
-  secretKey: process.env.SCALA_SECRET_KEY || '',
-  baseUrl: process.env.SCALA_BASE_URL || 'https://api.scalapagamentos.com.br',
+  clientId: process.env.SCALA_CLIENT_ID || process.env.SCALA_API_KEY || '',
+  clientSecret: process.env.SCALA_CLIENT_SECRET || process.env.SCALA_SECRET_KEY || '',
+  baseUrl: process.env.SCALA_BASE_URL || 'https://api.scalapag.com/v2',
+  webhookUrl: process.env.SCALA_WEBHOOK_URL || 'https://starstorecell.onrender.com',
   pixKey: process.env.PIX_KEY || '5516997655257',
   merchantName: 'STARCELL',
   merchantCity: 'CIUDAD DEL ESTE'
@@ -383,6 +384,54 @@ function generatePixCopiaECola({ chave, nome, cidade, valor, txid }) {
   return `${rawPayload}${crc16(rawPayload)}`;
 }
 
+// 🌐 Chamada à API Oficial Scala Pag v2 (OAuth 2.0 + Cash-in)
+async function createScalaPixCharge({ amount, externalId, customerName, customerDoc }) {
+  const clientId = SCALA_CONFIG.clientId;
+  const clientSecret = SCALA_CONFIG.clientSecret;
+  if (!clientId || !clientSecret) return null;
+
+  try {
+    const authHeader = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+    const tokenRes = await fetch(`${SCALA_CONFIG.baseUrl}/oauth/token`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${authHeader}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials'
+    });
+    const tokenData = await tokenRes.json();
+    if (!tokenData || !tokenData.access_token) {
+      console.warn('⚠️ [Scala Pag] Token não retornado, usando fallback direto.');
+      return null;
+    }
+
+    const cashinRes = await fetch(`${SCALA_CONFIG.baseUrl}/transactions/cashin`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${tokenData.access_token}`,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': externalId
+      },
+      body: JSON.stringify({
+        amount: amount,
+        external_id: externalId,
+        payer: {
+          name: customerName,
+          document: (customerDoc || '').replace(/\D/g, '')
+        },
+        postback_url: `${SCALA_CONFIG.webhookUrl}/api/pix/webhook`,
+        expires_in: 900
+      })
+    });
+    const cashinData = await cashinRes.json();
+    return cashinData;
+  } catch (err) {
+    console.warn('⚠️ [Scala Pag] Falha ao comunicar com API:', err.message);
+    return null;
+  }
+}
+
 // 🛒 Criar Cobrança Pix Imediata
 app.post('/api/pix/create-charge', async (req, res) => {
   try {
@@ -398,15 +447,33 @@ app.post('/api/pix/create-charge', async (req, res) => {
     const now = new Date();
     const expiresAt = new Date(now.getTime() + 15 * 60 * 1000);
 
-    const pixCode = generatePixCopiaECola({
-      chave: SCALA_CONFIG.pixKey,
-      nome: SCALA_CONFIG.merchantName,
-      cidade: SCALA_CONFIG.merchantCity,
-      valor: finalAmount,
-      txid: orderId
+    let pixCode = '';
+    let qrCodeUrl = '';
+
+    // 1. Tentar gerar via API Oficial da Scala Pag
+    const scalaResult = await createScalaPixCharge({
+      amount: finalAmount,
+      externalId: orderId,
+      customerName: customer.name,
+      customerDoc: customer.cpf
     });
 
-    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
+    if (scalaResult && (scalaResult.qrcode_text || scalaResult.emv || scalaResult.pix_code)) {
+      pixCode = scalaResult.qrcode_text || scalaResult.emv || scalaResult.pix_code;
+      qrCodeUrl = scalaResult.qrcode || scalaResult.qr_code_url || `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
+      console.log(`✅ [Scala API] Cobrança Pix ${orderId} gerada com sucesso via gateway Scala.`);
+    } else {
+      // 2. Fallback para Motor EMV Nativo StarCell
+      pixCode = generatePixCopiaECola({
+        chave: SCALA_CONFIG.pixKey,
+        nome: SCALA_CONFIG.merchantName,
+        cidade: SCALA_CONFIG.merchantCity,
+        valor: finalAmount,
+        txid: orderId
+      });
+      qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(pixCode)}`;
+      console.log(`⚡ [EMV Engine] Cobrança Pix ${orderId} gerada com sucesso via chave oficial.`);
+    }
 
     const orderData = {
       orderId,

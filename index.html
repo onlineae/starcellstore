@@ -176,13 +176,13 @@
           <span class="text-base">📱</span>
           <span>Catálogo Completo</span>
         </a>
-        <a href="#destaques" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
-          <span class="text-base">⌚</span>
-          <span>Apple Watch Ultra 3 & Som</span>
-        </a>
         <a href="#simulador" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
           <span class="text-base">💳</span>
           <span>Consulta CPF / Boleto</span>
+        </a>
+        <a href="#destaques" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
+          <span class="text-base">⌚</span>
+          <span>Apple Watch Ultra 3 & Som</span>
         </a>
         <a href="#lancamento-18" class="flex items-center gap-2.5 text-slate-700 hover:text-[#0071e3] hover:bg-slate-50 font-medium text-xs sm:text-sm py-2.5 px-3 rounded-xl border border-slate-100 transition">
           <span class="text-base">⚡</span>
@@ -337,6 +337,285 @@
     </div>
   </section>
 
+  <!-- 💳 CONSULTA DE CPF: ENTRADA FACILITADA (22%) & PARCELAMENTO NO BOLETO -->
+  <section id="simulador" class="py-12 sm:py-16 relative z-10 scroll-mt-20 border-t border-slate-200/80 bg-gradient-to-b from-white via-[#fbfbfd] to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 motion-reveal">
+      
+      <div class="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-8 shadow-apple">
+        
+        <div class="border-b border-slate-100 pb-5 mb-5">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase mb-2">
+            <i data-lucide="file-check-2" class="w-3.5 h-3.5"></i>
+            <span>Análise Instantânea • Boleto Bancário</span>
+          </div>
+          <h2 class="text-xl sm:text-3xl font-black text-[#1d1d1f] tracking-tight">Consulta de CPF para Entrada & Boleto</h2>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
+            Consulte seu CPF em tempo real para liberação de compra com <strong>Entrada Facilitada de 22%</strong> (via PIX ou PIX + Cartão de Crédito) e parcele os <strong>78% restantes em até 24x sem juros no boleto bancário</strong> com aprovação imediata.
+          </p>
+
+          <!-- ⚠️ AVISO OBRIGATÓRIO DE SEGURANÇA -->
+          <div class="mt-4 p-3 sm:p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-950 flex items-start gap-2.5">
+            <div class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+            </div>
+            <div class="text-[11px] sm:text-xs leading-relaxed">
+              <strong class="font-extrabold uppercase tracking-wide block text-amber-900 mb-0.5">Aviso Importante de Segurança:</strong>
+              <span class="font-bold text-amber-950">NÃO ACEITAMOS CARTÕES DE CRÉDITO PARA PAGAMENTO DO VALOR TOTAL DEVIDO A FRAUDES E GOLPES. O FATURAMENTO É EXCLUSIVO COM ENTRADA DE 22% (VIA PIX OU PIX COM CARTÃO) E SALDO PARCELADO NO BOLETO BANCÁRIO.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formulário de Consulta ao CPF -->
+        <form id="cpf-consult-form" onsubmit="handleCpfConsultation(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Nome Completo</label>
+              <input 
+                type="text" 
+                id="cpf-consult-name" 
+                required 
+                placeholder="Digite seu nome completo" 
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">CPF para Consulta</label>
+              <input 
+                type="text" 
+                id="cpf-consult-cpf" 
+                required 
+                maxlength="14"
+                oninput="maskCpf(this)"
+                placeholder="000.000.000-00" 
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-mono"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">WhatsApp / Celular com DDD</label>
+              <input 
+                type="tel" 
+                id="cpf-consult-phone" 
+                required 
+                maxlength="15"
+                oninput="maskPhone(this)"
+                placeholder="(00) 00000-0000" 
+                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-mono"
+              >
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Aparelho Desejado</label>
+              <select id="cpf-consult-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
+                <option value="iPhone 18 Pro Max 256GB" data-price="8999">iPhone 18 Pro Max 256GB - R$ 8.999,00 (Lançamento)</option>
+                <option value="iPhone 18 Pro Max 512GB" data-price="9499">iPhone 18 Pro Max 512GB - R$ 9.499,00 (Lançamento)</option>
+                <option value="iPhone 18 Pro 256GB" data-price="8099">iPhone 18 Pro 256GB - R$ 8.099,00 (Lançamento)</option>
+                <option value="iPhone 18 Pro 512GB" data-price="8799">iPhone 18 Pro 512GB - R$ 8.799,00 (Lançamento)</option>
+                <option value="iPhone 17 Pro Max 256GB" data-price="6900">iPhone 17 Pro Max 256GB - R$ 6.900,00</option>
+                <option value="iPhone 17 Pro 256GB" data-price="6000">iPhone 17 Pro 256GB - R$ 6.000,00</option>
+                <option value="iPhone 17 256GB" data-price="4500">iPhone 17 256GB - R$ 4.500,00</option>
+                <option value="iPhone 17E 256GB" data-price="3200">iPhone 17E 256GB - R$ 3.200,00</option>
+                <option value="iPhone 16 Pro Max 256GB" data-price="5800">iPhone 16 Pro Max 256GB - R$ 5.800,00</option>
+                <option value="iPhone 16 Pro 128GB" data-price="4900">iPhone 16 Pro 128GB - R$ 4.900,00</option>
+                <option value="iPhone 15 128GB" data-price="3000">iPhone 15 128GB - R$ 3.000,00</option>
+                <option value="Apple Watch Ultra 3" data-price="3900">Apple Watch Ultra 3 - R$ 3.900,00</option>
+                <option value="JBL Boombox 4 Camuflada" data-price="1998.90">JBL Boombox 4 Camuflada - R$ 1.998,90</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Forma da Entrada Facilitada (22%)</label>
+              <select id="cpf-consult-entry" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
+                <option value="Entrada Facilitada de 22% no PIX (Com 5% de Desconto)">⚡ Entrada de 22% no PIX (Com 5% de Desconto)</option>
+                <option value="Entrada Facilitada de 22% PIX com Cartão de Crédito">💳 Entrada de 22% PIX com Cartão de Crédito</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Plano de Parcelamento no Boleto</label>
+              <select id="cpf-consult-installments" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
+                <option value="6">6x no Boleto Bancário Sem Juros</option>
+                <option value="12" selected>12x no Boleto Bancário Sem Juros (Mais Escolhido)</option>
+                <option value="18">18x no Boleto Bancário Sem Juros</option>
+                <option value="24">24x no Boleto Bancário Sem Juros</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span class="text-xs text-slate-500 text-center sm:text-left flex items-center gap-1.5">
+              <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-600"></i>
+              Consulta 100% sigilosa, segura e com resposta em 6 segundos.
+            </span>
+            <button 
+              type="submit" 
+              id="cpf-consult-submit-btn" 
+              class="btn-apple-primary w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-sm active:scale-95"
+            >
+              <i data-lucide="file-check" class="w-4 h-4"></i>
+              <span>Consultar CPF & Aprovar Boleto</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Loading State durante a Análise (Tela de Carregamento de 6 Segundos) -->
+        <div id="cpf-consult-loading" class="hidden py-10 px-4 text-center max-w-lg mx-auto space-y-6">
+          <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-[#0071e3] border-t-transparent animate-spin"></div>
+            <i data-lucide="shield-check" class="w-8 h-8 text-[#0071e3] animate-pulse"></i>
+          </div>
+
+          <div class="space-y-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0071e3] text-[11px] font-bold uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-[#0071e3] animate-ping"></span>
+              Análise em Tempo Real • 6 Segundos
+            </span>
+            <h4 id="cpf-loading-title" class="text-base sm:text-lg font-black text-[#1d1d1f] transition-all">
+              Conectando aos birôs de crédito oficiais...
+            </h4>
+            <p id="cpf-loading-desc" class="text-xs text-slate-500 leading-relaxed transition-all">
+              Verificando base de dados do CPF e consultando limites para emissão no boleto.
+            </p>
+          </div>
+
+          <!-- Barra de Progresso Animada de 6 Segundos -->
+          <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200/80 p-0.5">
+            <div id="cpf-progress-bar" class="bg-gradient-to-r from-[#0071e3] via-blue-500 to-emerald-500 h-full rounded-full transition-all duration-300 ease-out" style="width: 5%;"></div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400">
+            <span>Protocolo StarCell Seguro</span>
+            <span id="cpf-progress-counter" class="font-bold text-[#0071e3]">0%</span>
+          </div>
+        </div>
+
+        <!-- Resultado Aprovado com Regra de 22% de Entrada -->
+        <div id="cpf-consult-result" class="hidden pt-2 space-y-4">
+          <div class="p-5 sm:p-6 rounded-3xl bg-emerald-50/90 border border-emerald-300 text-left space-y-4 shadow-sm">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-200 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-500 text-white flex items-center justify-center font-bold shadow-md shrink-0">
+                  <i data-lucide="check" class="w-6 h-6 stroke-[3]"></i>
+                </div>
+                <div>
+                  <span class="text-[10px] font-extrabold text-emerald-800 uppercase tracking-widest block">Análise Concluída em 6s</span>
+                  <h4 class="text-lg sm:text-xl font-black text-emerald-950">PARABÉNS! CPF PRÉ-APROVADO COM SUCESSO</h4>
+                </div>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold uppercase shrink-0 self-start sm:self-auto shadow-sm">
+                <i data-lucide="badge-percent" class="w-4 h-4"></i>
+                <span>22% Entrada Facilitada</span>
+              </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-emerald-900 leading-relaxed">
+              Ótima notícia! Seu CPF possui limite liberado para faturamento imediato. Conforme a política oficial de segurança, a contratação é efetuada com <strong>22% de entrada facilitada</strong> e os <strong>78% restantes parcelados no boleto bancário</strong> sem necessidade de comprovação de renda complexa.
+            </p>
+
+            <!-- Box Destaque de Valores: Entrada 22% e Parcelas 78% -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              
+              <!-- Card 1: Entrada 22% -->
+              <div class="bg-white rounded-2xl p-4 border border-emerald-300 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[11px] uppercase tracking-wider font-extrabold text-emerald-800">Entrada Obrigatória (22%)</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Faturamento</span>
+                  </div>
+                  <div id="res-consult-entry-val" class="text-2xl sm:text-3xl font-black text-emerald-600 font-mono">
+                    R$ 0,00
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-1 leading-snug">
+                    Valor de entrada facilitada exigido para emissão da nota fiscal e garantia do aparelho.
+                  </p>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span class="text-slate-500">Forma da Entrada:</span>
+                  <strong id="res-consult-entry" class="text-slate-900 font-semibold text-right"></strong>
+                </div>
+              </div>
+
+              <!-- Card 2: Saldo Restante 78% no Boleto -->
+              <div class="bg-white rounded-2xl p-4 border border-blue-200 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[11px] uppercase tracking-wider font-extrabold text-[#0071e3]">Saldo Parcelado no Boleto (78%)</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-50 text-[#0071e3]">Sem Juros</span>
+                  </div>
+                  <div id="res-consult-installments-val" class="text-xl sm:text-2xl font-black text-[#0071e3] font-mono">
+                    0x de R$ 0,00
+                  </div>
+                  <p class="text-[11px] text-slate-500 mt-1 leading-snug">
+                    Total financiado: <strong id="res-consult-balance-val" class="text-slate-800 font-mono">R$ 0,00</strong>. Primeiro boleto para 30 dias após a entrega!
+                  </p>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span class="text-slate-500">Plano Escolhido:</span>
+                  <strong id="res-consult-installments-text" class="text-slate-900 font-semibold text-right"></strong>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Dados do Titular & Resumo -->
+            <div class="bg-white/95 rounded-2xl p-4 border border-emerald-200/80 text-xs space-y-2 text-slate-700">
+              <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                <span class="text-slate-500">Cliente Titular:</span>
+                <strong id="res-consult-name" class="text-slate-900 font-bold"></strong>
+              </div>
+              <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                <span class="text-slate-500">CPF Consultado:</span>
+                <strong id="res-consult-cpf" class="text-slate-900 font-mono"></strong>
+              </div>
+              <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                <span class="text-slate-500">Aparelho Selecionado:</span>
+                <strong id="res-consult-model" class="text-[#0071e3] font-bold"></strong>
+              </div>
+              <div class="flex justify-between items-center py-0.5">
+                <span class="text-slate-500">Valor Total de Tabela:</span>
+                <strong id="res-consult-total-val" class="text-slate-900 font-bold font-mono"></strong>
+              </div>
+            </div>
+
+            <!-- ⚠️ AVISO REFORÇADO DE SEGURANÇA NO RESULTADO -->
+            <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-950 flex items-start gap-2">
+              <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+              <span><strong>Atenção:</strong> Por políticas de segurança contra fraudes cibernéticas, não aceitamos cartão de crédito para pagamento do saldo total do aparelho. Apenas entrada de 22% via PIX ou PIX com Cartão, com o saldo faturado no boleto.</span>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="pt-2 flex flex-col sm:flex-row items-center gap-2.5">
+              <a 
+                id="cpf-finish-wa-btn" 
+                href="#" 
+                target="_blank" 
+                class="btn-apple-primary w-full py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition active:scale-95"
+              >
+                <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
+                <span>Garantir Aparelho com Entrada de 22% no WhatsApp</span>
+              </a>
+              <button 
+                type="button" 
+                onclick="resetCpfConsultation()" 
+                class="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition shrink-0"
+              >
+                Nova Consulta
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- Apple Watch Ultra 3 & Acessórios -->
   <section id="destaques" class="py-12 sm:py-16 bg-[#f5f5f7] border-t border-slate-200/80 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -440,203 +719,6 @@
             </div>
           </div>
 
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- 💳 CONSULTA DE CPF: ENTRADA PIX / PIX + CARTÃO & PARCELAMENTO NO BOLETO -->
-  <section id="simulador" class="py-12 sm:py-16 relative z-10 scroll-mt-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 motion-reveal">
-      
-      <div class="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-8 shadow-apple">
-        
-        <div class="border-b border-slate-100 pb-5 mb-5">
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 border border-blue-200/80 text-[#0071e3] text-xs font-bold uppercase mb-2">
-            <i data-lucide="file-check-2" class="w-3.5 h-3.5"></i>
-            <span>Análise Instantânea • Boleto Bancário</span>
-          </div>
-          <h2 class="text-xl sm:text-3xl font-black text-[#1d1d1f] tracking-tight">Consulta ao CPF para Entrada & Boleto</h2>
-          <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-            Consulte seu CPF em tempo real para liberação de compra com <strong>Entrada Facilitada no PIX</strong> ou <strong>Entrada PIX com Cartão de Crédito</strong> e parcele o saldo restante em até 24x no boleto bancário sem burocracia.
-          </p>
-
-          <!-- ⚠️ AVISO OBRIGATÓRIO DE SEGURANÇA -->
-          <div class="mt-4 p-3 sm:p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-950 flex items-start gap-2.5">
-            <div class="w-6 h-6 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
-              <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
-            </div>
-            <div class="text-[11px] sm:text-xs leading-relaxed">
-              <strong class="font-extrabold uppercase tracking-wide block text-amber-900 mb-0.5">Aviso Importante de Segurança:</strong>
-              <span class="font-bold text-amber-950">NÃO ACEITAMOS CARTÕES DE CRÉDITO DEVIDO A FRAUDES E GOLPES, SOMENTE ENTRADA POR PIX OU PIX COM CARTÃO DE CRÉDITO.</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Formulário de Consulta ao CPF -->
-        <form id="cpf-consult-form" onsubmit="handleCpfConsultation(event)" class="space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Nome Completo</label>
-              <input 
-                type="text" 
-                id="cpf-consult-name" 
-                required 
-                placeholder="Digite seu nome completo" 
-                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all"
-              >
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">CPF para Consulta</label>
-              <input 
-                type="text" 
-                id="cpf-consult-cpf" 
-                required 
-                maxlength="14"
-                oninput="maskCpf(this)"
-                placeholder="000.000.000-00" 
-                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-mono"
-              >
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">WhatsApp / Celular com DDD</label>
-              <input 
-                type="tel" 
-                id="cpf-consult-phone" 
-                required 
-                maxlength="15"
-                oninput="maskPhone(this)"
-                placeholder="(00) 00000-0000" 
-                class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all font-mono"
-              >
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">iPhone ou Aparelho Desejado</label>
-              <select id="cpf-consult-model" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
-                <option value="iPhone 18 Pro Max 256GB">iPhone 18 Pro Max 256GB (Lançamento)</option>
-                <option value="iPhone 18 Pro Max 512GB">iPhone 18 Pro Max 512GB (Lançamento)</option>
-                <option value="iPhone 18 Pro 256GB">iPhone 18 Pro 256GB (Lançamento)</option>
-                <option value="iPhone 18 Pro 512GB">iPhone 18 Pro 512GB (Lançamento)</option>
-                <option value="iPhone 17 Pro Max 256GB">iPhone 17 Pro Max 256GB</option>
-                <option value="iPhone 17 Pro 256GB">iPhone 17 Pro 256GB</option>
-                <option value="iPhone 17 256GB">iPhone 17 256GB</option>
-                <option value="iPhone 17E 256GB">iPhone 17E 256GB</option>
-                <option value="iPhone 16 Pro Max 256GB">iPhone 16 Pro Max 256GB</option>
-                <option value="iPhone 16 Pro 128GB">iPhone 16 Pro 128GB</option>
-                <option value="iPhone 15 128GB">iPhone 15 128GB</option>
-                <option value="Apple Watch Ultra 3">Apple Watch Ultra 3</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Forma da Entrada Facilitada</label>
-              <select id="cpf-consult-entry" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
-                <option value="Entrada 100% no PIX (Com 5% OFF)">⚡ Entrada 100% no PIX (Com 5% de desconto)</option>
-                <option value="Entrada PIX com Cartão de Crédito">💳 Entrada PIX com Cartão de Crédito</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Plano no Boleto Bancário</label>
-              <select id="cpf-consult-installments" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-[#0071e3] focus:bg-white transition-all">
-                <option value="6x no Boleto Bancário">6x no Boleto Bancário</option>
-                <option value="12x no Boleto Bancário" selected>12x no Boleto Bancário (Mais Escolhido)</option>
-                <option value="18x no Boleto Bancário">18x no Boleto Bancário</option>
-                <option value="24x no Boleto Bancário">24x no Boleto Bancário</option>
-              </select>
-            </div>
-
-          </div>
-
-          <div class="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <span class="text-xs text-slate-500 text-center sm:text-left flex items-center gap-1.5">
-              <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-600"></i>
-              Consulta 100% sigilosa, segura e sem custo.
-            </span>
-            <button 
-              type="submit" 
-              id="cpf-consult-submit-btn" 
-              class="btn-apple-primary w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#0071e3] hover:bg-[#0077ed] text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-sm active:scale-95"
-            >
-              <i data-lucide="file-check" class="w-4 h-4"></i>
-              <span>Consultar CPF & Aprovar Boleto</span>
-            </button>
-          </div>
-        </form>
-
-        <!-- Loading State durante a Análise -->
-        <div id="cpf-consult-loading" class="hidden py-10 text-center space-y-3">
-          <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-[#0071e3] border-t-transparent"></div>
-          <h4 class="text-sm font-bold text-[#1d1d1f]">Consultando birôs de crédito e score...</h4>
-          <p class="text-xs text-slate-500">Avaliando limite disponível para emissão no boleto bancário.</p>
-        </div>
-
-        <!-- Resultado Aprovado -->
-        <div id="cpf-consult-result" class="hidden pt-4 space-y-4">
-          <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-200/90 text-left space-y-3">
-            <div class="flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold">
-                <i data-lucide="check" class="w-5 h-5"></i>
-              </div>
-              <div>
-                <span class="text-[10px] font-bold text-emerald-800 uppercase tracking-widest block">Análise Concluída</span>
-                <h4 class="text-base sm:text-lg font-black text-emerald-950">PARABÉNS! CPF PRÉ-APROVADO COM SUCESSO</h4>
-              </div>
-            </div>
-
-            <p class="text-xs text-emerald-900 leading-relaxed">
-              Identificamos limite pré-aprovado para liberação do seu aparelho com entrada via PIX ou PIX com Cartão de Crédito e parcelamento do saldo no boleto bancário!
-            </p>
-
-            <div class="bg-white/90 rounded-xl p-3.5 border border-emerald-200 text-xs space-y-1.5 text-slate-700">
-              <div class="flex justify-between">
-                <span class="text-slate-500">Titular:</span>
-                <strong id="res-consult-name" class="text-slate-900 font-bold"></strong>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-500">CPF:</span>
-                <strong id="res-consult-cpf" class="text-slate-900 font-mono"></strong>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-500">Aparelho Selecionado:</span>
-                <strong id="res-consult-model" class="text-[#0071e3] font-bold"></strong>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-500">Forma da Entrada:</span>
-                <strong id="res-consult-entry" class="text-slate-900 font-semibold"></strong>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-500">Plano no Boleto:</span>
-                <strong id="res-consult-installments" class="text-emerald-700 font-bold"></strong>
-              </div>
-            </div>
-
-            <!-- Botão WhatsApp com dados preenchidos -->
-            <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
-              <a 
-                id="cpf-finish-wa-btn" 
-                href="#" 
-                target="_blank" 
-                class="btn-apple-primary w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wide flex items-center justify-center gap-2 shadow-sm transition active:scale-95"
-              >
-                <i data-lucide="message-circle" class="w-4 h-4 fill-white"></i>
-                <span>Finalizar Emissão do Boleto no WhatsApp</span>
-              </a>
-              <button 
-                type="button" 
-                onclick="resetCpfConsultation()" 
-                class="w-full sm:w-auto py-3 px-4 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition"
-              >
-                Nova Consulta
-              </button>
-            </div>
-          </div>
         </div>
 
       </div>
